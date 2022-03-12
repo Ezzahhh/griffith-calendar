@@ -151,7 +151,9 @@ function MyApp({ toJSON }) {
                   <Text as="b" minW="70px">
                     All Day
                   </Text>
-                  <Text>{mySelectedEvent.allDay.toString()}</Text>
+                  <Text>
+                    {mySelectedEvent.allDay == false ? "False" : "True"}
+                  </Text>
                 </HStack>
               </ModalBody>
               <ModalFooter>
