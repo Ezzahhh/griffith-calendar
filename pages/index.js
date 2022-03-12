@@ -24,29 +24,13 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import ical from "node-ical";
 import { useState, useRef } from "react";
-import styled from "@emotion/styled";
 import Head from "next/head";
 import { motion } from "framer-motion";
-import theme from "../styles/theme";
+import { theme, StyleWrapper } from "../styles/theme";
 
 const MotionHeading = motion(Heading);
 const MotionBox = motion(Box);
 const MotionContainer = motion(Container);
-
-export const StyleWrapper = styled.div`
-  .fc-event {
-    cursor: pointer;
-  }
-  .fc-popover-header {
-    background-color: #1a202c;
-  }
-  .fc-popover-body {
-    background-color: #1a202c;
-  }
-  .fc-toolbar-title {
-    font-size: 1.5em;
-  }
-`;
 
 function MyApp({ toJSON }) {
   const calendarRef = useRef();
