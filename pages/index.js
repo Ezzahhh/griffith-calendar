@@ -33,6 +33,7 @@ const MotionBox = motion(Box);
 const MotionContainer = motion(Container);
 
 function MyApp({ toJSON }) {
+  const { colorMode, toggleColorMode } = useColorMode();
   const calendarRef = useRef();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const myEvent = useRef({
@@ -79,7 +80,7 @@ function MyApp({ toJSON }) {
   };
 
   return (
-    <ChakraProvider theme={theme}>
+    <>
       <Head>
         <title>Griffith Med Calendar</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
@@ -179,7 +180,7 @@ function MyApp({ toJSON }) {
           </Modal>
         </Flex>
       </Container>
-    </ChakraProvider>
+    </>
   );
 }
 
