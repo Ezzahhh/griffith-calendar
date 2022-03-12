@@ -128,7 +128,7 @@ function MyApp({ toJSON }) {
                   <Text as="b" minW="70px">
                     Title
                   </Text>
-                  <Text>{mySelectedEvent.title}</Text>
+                  <Text>{mySelectedEvent.title.replace(/_/g, " ")}</Text>
                 </HStack>
                 <HStack>
                   <Text as="b" minW="70px">
@@ -137,7 +137,7 @@ function MyApp({ toJSON }) {
                   <Text>
                     {mySelectedEvent.location == undefined
                       ? "Undefined"
-                      : mySelectedEvent.location.toString()}
+                      : mySelectedEvent.location.replace(/_/g, " ").toString()}
                   </Text>
                 </HStack>
                 <HStack>
