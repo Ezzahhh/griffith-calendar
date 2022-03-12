@@ -12,16 +12,17 @@ export const StyleWrapper = styled.div`
     cursor: pointer;
   }
   .fc-popover-header {
-    background-color: #1a202c;
+    background-color: ${(props) =>
+      props.colorMode === "dark" ? "#1a202c" : "#ffffff"};
   }
   .fc-popover-body {
-    background-color: #1a202c;
+    background-color: ${(props) =>
+      props.colorMode === "dark" ? "#1a202c" : "#ffffff"};
   }
   .fc-toolbar-title {
     font-size: 1.5em;
   }
 `;
-
 // 3. extend the theme
 const theme = extendTheme({ config });
 

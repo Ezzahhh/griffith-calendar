@@ -26,7 +26,8 @@ import ical from "node-ical";
 import { useState, useRef } from "react";
 import Head from "next/head";
 import { motion } from "framer-motion";
-import { theme, StyleWrapper } from "../styles/theme";
+import styled from "@emotion/styled";
+import { StyleWrapper } from "../styles/theme";
 
 const MotionHeading = motion(Heading);
 const MotionBox = motion(Box);
@@ -34,6 +35,7 @@ const MotionContainer = motion(Container);
 
 function MyApp({ toJSON }) {
   const { colorMode, toggleColorMode } = useColorMode();
+
   const calendarRef = useRef();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const myEvent = useRef({
@@ -124,7 +126,7 @@ function MyApp({ toJSON }) {
             exit={{ opacity: 0 }}
             transition={{ duration: 1.5 }}
           >
-            <StyleWrapper>
+            <StyleWrapper colorMode={colorMode}>
               <FullCalendar
                 plugins={[timeGridPlugin, dayGridPlugin]}
                 initialView="timeGridWeek"
@@ -136,7 +138,7 @@ function MyApp({ toJSON }) {
                 weekends={false}
                 events={hackBack}
                 eventClick={handleClick}
-                dayMaxEvents={false}
+                dayMaxEvents={true}
                 ref={calendarRef}
               />
             </StyleWrapper>
