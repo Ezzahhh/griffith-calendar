@@ -17,6 +17,7 @@ import {
   Flex,
   useColorMode,
   useColorModeValue,
+  ColorModeScript,
 } from "@chakra-ui/react";
 import { ColorModeSwitcher } from "../src/components/ColorModeSwitcher";
 import FullCalendar from "@fullcalendar/react";
@@ -39,7 +40,7 @@ export const StyleWrapper = styled.div`
   }
 `;
 const config = {
-  // initialColorMode: "light",
+  initialColorMode: "system",
   useSystemColorMode: true,
 };
 const theme = extendTheme({ config });
@@ -91,6 +92,7 @@ function MyApp({ toJSON }) {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <link rel="shortcut icon" href="/favicon.ico" />
       </Head>
+      <ColorModeScript initialColorMode={theme.config.initialColorMode} />
       <MotionContainer
         maxW="100%"
         initial={{ opacity: 0 }}
