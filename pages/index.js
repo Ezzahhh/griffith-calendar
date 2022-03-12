@@ -105,8 +105,9 @@ function MyApp({ toJSON }) {
           alignItems="center"
           alignContent="center"
           m={10}
+          maxW="100%"
         >
-          <Box sx={{ visibility: "hidden" }} />
+          <Box sx={{ visibility: "hidden" }} w="48px" />
           <MotionHeading
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
