@@ -26,6 +26,7 @@ import { extendTheme } from "@chakra-ui/react";
 import ical from "node-ical";
 import { useState } from "react";
 import styled from "@emotion/styled";
+import Head from "next/head";
 import { motion } from "framer-motion";
 
 export const StyleWrapper = styled.div`
@@ -76,6 +77,10 @@ function MyApp({ toJSON }) {
 
   return (
     <ChakraProvider>
+      <Head>
+        <title>Griffith Med Calendar</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <Flex justifyContent="flex-end" m={5}>
         <ColorModeSwitcher />
       </Flex>
@@ -88,7 +93,7 @@ function MyApp({ toJSON }) {
           minW="100%"
           minH="100%"
         >
-          <Heading>Griffith Med Calendar</Heading>
+          <Heading mb={10}>Griffith Med Calendar</Heading>
           <Box w="100%">
             <StyleWrapper>
               <FullCalendar
