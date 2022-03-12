@@ -51,14 +51,14 @@ function MyApp({ toJSON }) {
     try {
       myEvent.current = {
         title: res.event.title,
-        start: res.event.start.toString(),
-        end: res.event.end == undefined ? "N/A" : res.event.end.toString(),
-        allDay: res.event.allDay,
         location:
           res.event.extendedProps.location === "" ||
           res.event.extendedProps.location == undefined
             ? "N/A"
             : res.event.extendedProps.location.toString(),
+        start: res.event.start.toString(),
+        end: res.event.end == undefined ? "N/A" : res.event.end.toString(),
+        allDay: res.event.allDay,
       };
       onOpen();
     } catch (err) {
