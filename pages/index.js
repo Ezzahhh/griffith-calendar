@@ -43,6 +43,9 @@ export const StyleWrapper = styled.div`
   .fc-popover-body {
     background-color: #1a202c;
   }
+  .fc-toolbar-title {
+    font-size: 1.5em;
+  }
 `;
 
 function MyApp({ toJSON }) {
