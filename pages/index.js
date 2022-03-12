@@ -103,7 +103,10 @@ function MyApp({ toJSON }) {
           <ColorModeSwitcher />
         </Flex>
       </Container>
-      <Container maxW={{ base: "md", md: "8xl" }}>
+      <Container
+        maxW={{ base: "md", md: "7xl" }}
+        maxH={{ base: "md", md: "7xl" }}
+      >
         <Flex
           flexDirection="column"
           justifyContent="center"
