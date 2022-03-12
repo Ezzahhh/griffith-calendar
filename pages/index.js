@@ -83,6 +83,7 @@ function MyApp({ toJSON }) {
       <Head>
         <title>Griffith Med Calendar</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <link rel="shortcut icon" href="/favicon.ico" />
       </Head>
       <Container maxW="100%">
         <Flex
