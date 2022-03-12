@@ -29,6 +29,9 @@ import styled from "@emotion/styled";
 import Head from "next/head";
 import { motion } from "framer-motion";
 
+const MotionHeading = motion(Heading);
+const MotionBox = motion(Box);
+
 export const StyleWrapper = styled.div`
   .fc-event {
     cursor: pointer;
@@ -93,8 +96,22 @@ function MyApp({ toJSON }) {
           minW="100%"
           minH="100%"
         >
-          <Heading mb={10}>Griffith Med Calendar</Heading>
-          <Box w="100%">
+          <MotionHeading
+            mb={10}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1 }}
+          >
+            Griffith Med Calendar
+          </MotionHeading>
+          <MotionBox
+            w="100%"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.5 }}
+          >
             <StyleWrapper>
               <FullCalendar
                 plugins={[timeGridPlugin, dayGridPlugin]}
@@ -110,7 +127,7 @@ function MyApp({ toJSON }) {
                 dayMaxEvents={false}
               />
             </StyleWrapper>
-          </Box>
+          </MotionBox>
           <Modal
             closeOnOverlayClick={false}
             isOpen={isOpen}
