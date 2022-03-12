@@ -17,18 +17,17 @@ import {
   Flex,
   useColorMode,
   useColorModeValue,
-  ColorModeScript,
 } from "@chakra-ui/react";
 import { ColorModeSwitcher } from "../src/components/ColorModeSwitcher";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import { extendTheme } from "@chakra-ui/react";
 import ical from "node-ical";
 import { useState, useRef } from "react";
 import styled from "@emotion/styled";
 import Head from "next/head";
 import { motion } from "framer-motion";
+import theme from "../styles/theme";
 
 const MotionHeading = motion(Heading);
 const MotionBox = motion(Box);
@@ -45,12 +44,6 @@ export const StyleWrapper = styled.div`
     background-color: #1a202c;
   }
 `;
-
-const config = {
-  initialColorMode: "system",
-  useSystemColorMode: true,
-};
-const theme = extendTheme({ config });
 
 function MyApp({ toJSON }) {
   const calendarRef = useRef();
@@ -102,10 +95,7 @@ function MyApp({ toJSON }) {
     <ChakraProvider theme={theme}>
       <Head>
         <title>Griffith Med Calendar</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        <link rel="shortcut icon" href="/favicon.ico" />
       </Head>
-      <ColorModeScript initialColorMode={theme.config.initialColorMode} />
       <MotionContainer
         maxW="100%"
         initial={{ opacity: 0 }}
