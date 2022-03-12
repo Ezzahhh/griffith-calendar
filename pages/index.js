@@ -152,42 +152,18 @@ function MyApp({ toJSON }) {
               <ModalHeader>Event Details</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
-                <HStack>
-                  <Text as="b" minW="70px">
-                    Title
-                  </Text>
-                  <Text>{mySelectedEvent.title.replace(/_/g, " ")}</Text>
-                </HStack>
-                <HStack>
-                  <Text as="b" minW="70px">
-                    Location
-                  </Text>
-                  <Text>
-                    {mySelectedEvent.location == undefined
-                      ? "Undefined"
-                      : mySelectedEvent.location.replace(/_/g, " ").toString()}
-                  </Text>
-                </HStack>
-                <HStack>
-                  <Text as="b" minW="70px">
-                    Start
-                  </Text>
-                  <Text>{mySelectedEvent.start}</Text>
-                </HStack>
-                <HStack>
-                  <Text as="b" minW="70px">
-                    End
-                  </Text>
-                  <Text>{mySelectedEvent.end}</Text>
-                </HStack>
-                <HStack>
-                  <Text as="b" minW="70px">
-                    All Day
-                  </Text>
-                  <Text>
-                    {mySelectedEvent.allDay == false ? "False" : "True"}
-                  </Text>
-                </HStack>
+                {Object.entries(mySelectedEvent).map(([key, value]) => {
+                  return (
+                    <>
+                      <HStack>
+                        <Text as="b" minW="70px">
+                          {key}
+                        </Text>
+                        <Text>{value.toString().replace(/_/g, " ")}</Text>
+                      </HStack>
+                    </>
+                  );
+                })}
               </ModalBody>
               <ModalFooter>
                 <Button colorScheme="blue" mr={3} onClick={onClose}>
