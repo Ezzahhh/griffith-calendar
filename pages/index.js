@@ -47,7 +47,6 @@ function MyApp({ toJSON }) {
   console.log(hackBack);
 
   const handleClick = (res) => {
-    onOpen();
     try {
       myEvent.current = {
         title: res.event.title,
@@ -60,6 +59,7 @@ function MyApp({ toJSON }) {
             ? "N/A"
             : res.event.extendedProps.location.toString(),
       };
+      onOpen();
     } catch (err) {
       console.log(err);
     }
