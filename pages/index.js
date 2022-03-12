@@ -84,10 +84,26 @@ function MyApp({ toJSON }) {
         <title>Griffith Med Calendar</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <Flex justifyContent="flex-end" m={5}>
-        <ColorModeSwitcher />
-      </Flex>
-      <Container maxW={{ base: "md", md: "7xl" }}>
+      <Container maxW="100%">
+        <Flex
+          justifyContent="space-between"
+          alignItems="center"
+          alignContent="center"
+          m={10}
+        >
+          <Box sx={{ visibility: "hidden" }} />
+          <MotionHeading
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1 }}
+          >
+            Griffith Med Calendar
+          </MotionHeading>
+          <ColorModeSwitcher />
+        </Flex>
+      </Container>
+      <Container maxW={{ base: "md", md: "8xl" }}>
         <Flex
           flexDirection="column"
           justifyContent="center"
@@ -96,15 +112,6 @@ function MyApp({ toJSON }) {
           minW="100%"
           minH="100%"
         >
-          <MotionHeading
-            mb="70px"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1 }}
-          >
-            Griffith Med Calendar
-          </MotionHeading>
           <MotionBox
             w="100%"
             borderRadius="xl"
