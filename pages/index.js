@@ -237,7 +237,15 @@ export async function getServerSideProps() {
         Object.assign(newObject, (value["allDay"] = false));
       }
     }
-    Object.assign(newObject, value, { ["title"]: value["summary"] })["summary"];
+    if (value["summary"] !== undefined) {
+      Object.assign(newObject, value, {
+        ["title"]: value["summary"].toString(), //.replace(/_/g, " ") consider that we will have more trouble filtering then on client if we do this on server and pass it down
+      });
+    } else {
+      Object.assign(newObject, value, {
+        ["title"]: "",
+      });
+    }
     eventsArray.push(newObject);
   });
   console.log(eventsArray);
