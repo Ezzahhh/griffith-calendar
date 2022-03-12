@@ -53,7 +53,6 @@ const config = {
 const theme = extendTheme({ config });
 
 function MyApp({ toJSON }) {
-  const { colorMode, toggleColorMode } = useColorMode();
   const calendarRef = useRef();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [mySelectedEvent, setMySelectedEvent] = useState({
