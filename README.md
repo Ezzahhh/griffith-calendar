@@ -10,4 +10,4 @@ TODO:
 
 ## Disclaimers
 
-This is not an official project from Griffith Uni. Please don't sue me for putting Griffith in the title or stealing their favicon.
+This is not an official project from Griffith Uni. Please don't sue me for putting Griffith in the title or for stealing their favicon.

@@ -35,12 +35,12 @@ const MotionContainer = motion(Container);
 function MyApp({ toJSON }) {
   const calendarRef = useRef();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [mySelectedEvent, setMySelectedEvent] = useState({
+  const myEvent = useRef({
     title: "",
+    location: "",
     start: "",
     end: "",
     allDay: false,
-    location: "",
   });
 
   const hackBack = JSON.parse(toJSON);
@@ -49,7 +49,7 @@ function MyApp({ toJSON }) {
   const handleClick = (res) => {
     onOpen();
     try {
-      setMySelectedEvent({
+      myEvent.current = {
         title: res.event.title,
         start: res.event.start.toString(),
         end: res.event.end == undefined ? "N/A" : res.event.end.toString(),
@@ -59,7 +59,7 @@ function MyApp({ toJSON }) {
           res.event.extendedProps.location == undefined
             ? "N/A"
             : res.event.extendedProps.location.toString(),
-      });
+      };
     } catch (err) {
       console.log(err);
     }
@@ -82,6 +82,7 @@ function MyApp({ toJSON }) {
     <ChakraProvider theme={theme}>
       <Head>
         <title>Griffith Med Calendar</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <MotionContainer
         maxW="100%"
@@ -134,7 +135,7 @@ function MyApp({ toJSON }) {
                 weekends={false}
                 events={hackBack}
                 eventClick={handleClick}
-                dayMaxEvents={true}
+                dayMaxEvents={false}
                 ref={calendarRef}
               />
             </StyleWrapper>
@@ -152,11 +153,15 @@ function MyApp({ toJSON }) {
               <ModalHeader>Event Details</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
-                {Object.entries(mySelectedEvent).map(([key, value]) => {
+                {Object.entries(myEvent.current).map(([key, value]) => {
                   return (
                     <>
                       <HStack>
-                        <Text as="b" minW="70px">
+                        <Text
+                          as="b"
+                          minW="70px"
+                          sx={{ "text-transform": "capitalize" }}
+                        >
                           {key}
                         </Text>
                         <Text>{value.toString().replace(/_/g, " ")}</Text>
