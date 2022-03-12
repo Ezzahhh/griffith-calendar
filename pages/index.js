@@ -87,7 +87,7 @@ function MyApp({ toJSON }) {
       <Flex justifyContent="flex-end" m={5}>
         <ColorModeSwitcher />
       </Flex>
-      <Container maxW={{ base: "md", md: "6xl" }}>
+      <Container maxW={{ base: "md", md: "7xl" }}>
         <Flex
           flexDirection="column"
           justifyContent="center"
@@ -97,7 +97,7 @@ function MyApp({ toJSON }) {
           minH="100%"
         >
           <MotionHeading
-            mb={10}
+            mb="70px"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -107,6 +107,10 @@ function MyApp({ toJSON }) {
           </MotionHeading>
           <MotionBox
             w="100%"
+            borderRadius="xl"
+            boxShadow="2xl"
+            borderWidth={2}
+            p={5}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
