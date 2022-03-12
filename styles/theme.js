@@ -23,6 +23,14 @@ export const StyleWrapper = styled.div`
     font-size: 1.5em;
   }
 `;
+
+// .fc-button {
+//   background-color: ${(props) =>
+//     props.colorMode === "dark"
+//       ? "var(--chakra-colors-purple-900)"
+//       : "var(--chakra-colors-purple-900)"};
+// }
+
 // 3. extend the theme
 const theme = extendTheme({ config });
 
