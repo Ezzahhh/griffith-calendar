@@ -14,7 +14,6 @@ export default class Document extends NextDocument {
           <link rel="shortcut icon" href="/favicon.ico" />
         </Head>
         <body>
-          {/* 👇 Here's the script */}
           <ColorModeScript initialColorMode={theme.config.initialColorMode} />
           <Main />
           <NextScript />

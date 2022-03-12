@@ -111,14 +111,7 @@ function MyApp({ toJSON }) {
           maxW="100%"
         >
           <Box sx={{ visibility: "hidden" }} w="48px" />
-          <MotionHeading
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1 }}
-          >
-            Griffith Med Calendar
-          </MotionHeading>
+          <Heading>Griffith Med Calendar</Heading>
           <ColorModeSwitcher />
         </Flex>
       </MotionContainer>
