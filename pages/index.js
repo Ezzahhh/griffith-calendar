@@ -25,7 +25,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import { extendTheme } from "@chakra-ui/react";
 import ical from "node-ical";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import styled from "@emotion/styled";
 import Head from "next/head";
 import { motion } from "framer-motion";
@@ -38,7 +38,14 @@ export const StyleWrapper = styled.div`
   .fc-event {
     cursor: pointer;
   }
+  .fc-popover-header {
+    background-color: #1a202c;
+  }
+  .fc-popover-body {
+    background-color: #1a202c;
+  }
 `;
+
 const config = {
   initialColorMode: "system",
   useSystemColorMode: true,
@@ -46,6 +53,8 @@ const config = {
 const theme = extendTheme({ config });
 
 function MyApp({ toJSON }) {
+  const { colorMode, toggleColorMode } = useColorMode();
+  const calendarRef = useRef();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [mySelectedEvent, setMySelectedEvent] = useState({
     title: "",
@@ -60,14 +69,6 @@ function MyApp({ toJSON }) {
 
   const handleClick = (res) => {
     onOpen();
-    const arrayOfEvents = [
-      "title",
-      "start",
-      "end",
-      "allDay",
-      "location",
-      "allDay",
-    ];
     try {
       setMySelectedEvent({
         title: res.event.title,
@@ -83,6 +84,19 @@ function MyApp({ toJSON }) {
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const goNext = () => {
+    const calendarApi = calendarRef.current.getApi();
+    calendarApi.next();
+  };
+  const goPrev = () => {
+    const calendarApi = calendarRef.current.getApi();
+    calendarApi.prev();
+  };
+  const goToday = () => {
+    const calendarApi = calendarRef.current.getApi();
+    calendarApi.today();
   };
 
   return (
@@ -119,10 +133,7 @@ function MyApp({ toJSON }) {
           <ColorModeSwitcher />
         </Flex>
       </MotionContainer>
-      <Container
-        maxW={{ base: "md", md: "7xl" }}
-        maxH={{ base: "md", md: "7xl" }}
-      >
+      <Container maxW="7xl">
         <Flex
           flexDirection="column"
           justifyContent="center"
@@ -154,7 +165,8 @@ function MyApp({ toJSON }) {
                 weekends={false}
                 events={hackBack}
                 eventClick={handleClick}
-                dayMaxEvents={false}
+                dayMaxEvents={true}
+                ref={calendarRef}
               />
             </StyleWrapper>
           </MotionBox>
