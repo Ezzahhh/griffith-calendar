@@ -7,3 +7,7 @@ Additional functionality will allow selection of "Pathways" depending on user pr
 TODO:
 
 - Either on server-side or client-side make the events prettier by removing underscores and replacing with spaces
+
+## Disclaimers
+
+This is not an official project from Griffith Uni. Please don't sue me for putting Griffith in the title or stealing their favicon.

@@ -31,12 +31,18 @@ import { motion } from "framer-motion";
 
 const MotionHeading = motion(Heading);
 const MotionBox = motion(Box);
+const MotionContainer = motion(Container);
 
 export const StyleWrapper = styled.div`
   .fc-event {
     cursor: pointer;
   }
 `;
+const config = {
+  // initialColorMode: "light",
+  useSystemColorMode: true,
+};
+const theme = extendTheme({ config });
 
 function MyApp({ toJSON }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -79,13 +85,19 @@ function MyApp({ toJSON }) {
   };
 
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       <Head>
         <title>Griffith Med Calendar</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <link rel="shortcut icon" href="/favicon.ico" />
       </Head>
-      <Container maxW="100%">
+      <MotionContainer
+        maxW="100%"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 1 }}
+      >
         <Flex
           justifyContent="space-between"
           alignItems="center"
@@ -103,7 +115,7 @@ function MyApp({ toJSON }) {
           </MotionHeading>
           <ColorModeSwitcher />
         </Flex>
-      </Container>
+      </MotionContainer>
       <Container
         maxW={{ base: "md", md: "7xl" }}
         maxH={{ base: "md", md: "7xl" }}
@@ -121,7 +133,7 @@ function MyApp({ toJSON }) {
             borderRadius="xl"
             boxShadow="2xl"
             borderWidth={2}
-            p={5}
+            p={6}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -211,12 +223,6 @@ export default MyApp;
 export async function getServerSideProps() {
   const url =
     "https://outlook.office365.com/owa/calendar/95a5e9a1a2f74f208b8a4b2f7777400b@griffith.edu.au/9d59cd2171d4448da3d24ff30c5ed5923258360342090266040/calendar.ics";
-  // const res = await axios({
-  //   method: "get",
-  //   url: url,
-  //   responseType: "arraybuffer",
-  // }).then((response) => Buffer.from(response.data, "UTF-8").toString());
-  // console.log(res);
 
   const webEvents = await ical.async.fromURL(url);
   const tempConvert = JSON.parse(JSON.stringify(webEvents));
