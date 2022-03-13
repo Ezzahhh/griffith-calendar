@@ -26,7 +26,6 @@ import ical from "node-ical";
 import { useState, useRef } from "react";
 import Head from "next/head";
 import { motion } from "framer-motion";
-import styled from "@emotion/styled";
 import { StyleWrapper } from "../styles/theme";
 
 const MotionHeading = motion(Heading);
@@ -140,6 +139,12 @@ function MyApp({ toJSON }) {
                 eventClick={handleClick}
                 dayMaxEvents={true}
                 ref={calendarRef}
+                dayHeaderFormat={{
+                  weekday: "short",
+                  day: "numeric",
+                  month: "numeric",
+                  omitCommas: true,
+                }}
               />
             </StyleWrapper>
           </MotionBox>
