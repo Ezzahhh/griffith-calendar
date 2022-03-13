@@ -139,11 +139,28 @@ function MyApp({ toJSON }) {
                 eventClick={handleClick}
                 dayMaxEvents={true}
                 ref={calendarRef}
-                dayHeaderFormat={{
-                  weekday: "short",
-                  day: "numeric",
-                  month: "numeric",
-                  omitCommas: true,
+                views={{
+                  dayGridMonth: {
+                    dayHeaderFormat: {
+                      weekday: "short",
+                    },
+                  },
+                  dayGrid: {
+                    dayHeaderFormat: {
+                      weekday: "short",
+                      day: "numeric",
+                      month: "long",
+                      omitCommas: true,
+                    },
+                  },
+                  timeGrid: {
+                    dayHeaderFormat: {
+                      weekday: "short",
+                      day: "numeric",
+                      month: "long",
+                      omitCommas: true,
+                    },
+                  },
                 }}
               />
             </StyleWrapper>
