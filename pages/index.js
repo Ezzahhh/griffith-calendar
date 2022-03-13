@@ -28,7 +28,6 @@ import { motion } from "framer-motion";
 import { StyleWrapper } from "../styles/theme";
 import axios from "axios";
 
-const MotionHeading = motion(Heading);
 const MotionBox = motion(Box);
 const MotionContainer = motion(Container);
 
