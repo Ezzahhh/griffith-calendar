@@ -1,5 +1,4 @@
 import {
-  ChakraProvider,
   Container,
   Heading,
   Box,
@@ -78,6 +77,19 @@ function MyApp({ toJSON }) {
   const goToday = () => {
     const calendarApi = calendarRef.current.getApi();
     calendarApi.today();
+  };
+
+  const goWeek = () => {
+    const calendarApi = calendarRef.current.getApi();
+    calendarApi.changeView("timeGridWeek");
+  };
+  const goDay = () => {
+    const calendarApi = calendarRef.current.getApi();
+    calendarApi.changeView("timeGridDay");
+  };
+  const goMonth = () => {
+    const calendarApi = calendarRef.current.getApi();
+    calendarApi.changeView("dayGridMonth");
   };
 
   return (
