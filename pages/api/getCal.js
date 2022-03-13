@@ -50,6 +50,6 @@ export default async function handler(req, res) {
     eventsArray.push(newObject);
   });
 
-  const toJSON = JSON.stringify(eventsArray);
-  res.status(200).json(toJSON);
+  // const toJSON = JSON.stringify();
+  res.status(200).json(eventsArray);
 }
