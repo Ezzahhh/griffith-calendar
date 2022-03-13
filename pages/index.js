@@ -30,6 +30,7 @@ import axios from "axios";
 
 const MotionBox = motion(Box);
 const MotionContainer = motion(Container);
+const MotionSpinner = motion(Spinner);
 
 function MyApp() {
   console.log("rendering...");
@@ -129,17 +130,22 @@ function MyApp() {
         </Flex>
       </MotionContainer>
 
-      <Container maxW="7xl">
+      <Container maxW="5xl">
         <Flex
           flexDirection="column"
           justifyContent="center"
           alignItems="center"
           alignContent="center"
-          minW="100%"
-          minH="100%"
         >
           {calendarFetchResults.isLoading ? (
-            <Spinner color="red.500" size="xl" />
+            <MotionSpinner
+              color="red.500"
+              size="xl"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1 }}
+            />
           ) : (
             <MotionBox
               w="100%"
@@ -147,10 +153,10 @@ function MyApp() {
               boxShadow="2xl"
               borderWidth={2}
               p={6}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              initial={{ y: "5vh", opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 1.5 }}
+              transition={{ ease: "easeIn", duration: 0.8 }}
             >
               <StyleWrapper colorMode={colorMode}>
                 <FullCalendar
