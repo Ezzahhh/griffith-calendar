@@ -17,7 +17,6 @@ import {
   useColorMode,
   useColorModeValue,
   Spinner,
-  Skeleton,
 } from "@chakra-ui/react";
 import { ColorModeSwitcher } from "../src/components/ColorModeSwitcher";
 import FullCalendar from "@fullcalendar/react";
@@ -164,7 +163,6 @@ function MyApp() {
                     right: "timeGridWeek,timeGridDay,dayGridMonth",
                   }}
                   weekends={false}
-                  // events={hackBack}
                   events={calendarFetchResults.results}
                   eventClick={handleClick}
                   dayMaxEvents={true}
