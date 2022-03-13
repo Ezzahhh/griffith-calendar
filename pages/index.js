@@ -16,24 +16,30 @@ import {
   Flex,
   useColorMode,
   useColorModeValue,
+  Spinner,
+  Skeleton,
 } from "@chakra-ui/react";
 import { ColorModeSwitcher } from "../src/components/ColorModeSwitcher";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import ical from "node-ical";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Head from "next/head";
 import { motion } from "framer-motion";
 import { StyleWrapper } from "../styles/theme";
+import axios from "axios";
 
 const MotionHeading = motion(Heading);
 const MotionBox = motion(Box);
 const MotionContainer = motion(Container);
 
-function MyApp({ toJSON }) {
+function MyApp() {
+  console.log("rendering...");
   const { colorMode, toggleColorMode } = useColorMode();
-
+  const [calendarFetchResults, setCalendarFetchResults] = useState({
+    isLoading: true,
+    results: [],
+  });
   const calendarRef = useRef();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const myEvent = useRef({
@@ -43,9 +49,6 @@ function MyApp({ toJSON }) {
     end: "",
     allDay: false,
   });
-
-  const hackBack = JSON.parse(toJSON);
-  console.log(hackBack);
 
   const handleClick = (res) => {
     try {
@@ -92,6 +95,16 @@ function MyApp({ toJSON }) {
     calendarApi.changeView("dayGridMonth");
   };
 
+  const getEventData = async () => {
+    const response = await axios.get("/api/getCal");
+    setCalendarFetchResults({ isLoading: false, results: response.data });
+    // return response.data;
+  };
+
+  useEffect(() => {
+    getEventData();
+  }, []);
+
   return (
     <>
       <Head>
@@ -117,6 +130,7 @@ function MyApp({ toJSON }) {
           <ColorModeSwitcher />
         </Flex>
       </MotionContainer>
+
       <Container maxW="7xl">
         <Flex
           flexDirection="column"
@@ -126,57 +140,62 @@ function MyApp({ toJSON }) {
           minW="100%"
           minH="100%"
         >
-          <MotionBox
-            w="100%"
-            borderRadius="xl"
-            boxShadow="2xl"
-            borderWidth={2}
-            p={6}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1.5 }}
-          >
-            <StyleWrapper colorMode={colorMode}>
-              <FullCalendar
-                plugins={[timeGridPlugin, dayGridPlugin]}
-                initialView="timeGridWeek"
-                headerToolbar={{
-                  left: "prev,next today",
-                  center: "title",
-                  right: "timeGridWeek,timeGridDay,dayGridMonth",
-                }}
-                weekends={false}
-                events={hackBack}
-                eventClick={handleClick}
-                dayMaxEvents={true}
-                ref={calendarRef}
-                views={{
-                  dayGridMonth: {
-                    dayHeaderFormat: {
-                      weekday: "short",
+          {calendarFetchResults.isLoading ? (
+            <Spinner color="red.500" size="xl" />
+          ) : (
+            <MotionBox
+              w="100%"
+              borderRadius="xl"
+              boxShadow="2xl"
+              borderWidth={2}
+              p={6}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.5 }}
+            >
+              <StyleWrapper colorMode={colorMode}>
+                <FullCalendar
+                  plugins={[timeGridPlugin, dayGridPlugin]}
+                  initialView="timeGridWeek"
+                  headerToolbar={{
+                    left: "prev,next today",
+                    center: "title",
+                    right: "timeGridWeek,timeGridDay,dayGridMonth",
+                  }}
+                  weekends={false}
+                  // events={hackBack}
+                  events={calendarFetchResults.results}
+                  eventClick={handleClick}
+                  dayMaxEvents={true}
+                  ref={calendarRef}
+                  views={{
+                    dayGridMonth: {
+                      dayHeaderFormat: {
+                        weekday: "short",
+                      },
                     },
-                  },
-                  dayGrid: {
-                    dayHeaderFormat: {
-                      weekday: "short",
-                      day: "numeric",
-                      month: "long",
-                      omitCommas: true,
+                    dayGrid: {
+                      dayHeaderFormat: {
+                        weekday: "short",
+                        day: "numeric",
+                        month: "long",
+                        omitCommas: true,
+                      },
                     },
-                  },
-                  timeGrid: {
-                    dayHeaderFormat: {
-                      weekday: "short",
-                      day: "numeric",
-                      month: "long",
-                      omitCommas: true,
+                    timeGrid: {
+                      dayHeaderFormat: {
+                        weekday: "short",
+                        day: "numeric",
+                        month: "long",
+                        omitCommas: true,
+                      },
                     },
-                  },
-                }}
-              />
-            </StyleWrapper>
-          </MotionBox>
+                  }}
+                />
+              </StyleWrapper>
+            </MotionBox>
+          )}
           <Modal
             closeOnOverlayClick={false}
             isOpen={isOpen}
@@ -221,61 +240,3 @@ function MyApp({ toJSON }) {
 }
 
 export default MyApp;
-
-export async function getServerSideProps() {
-  const url =
-    "https://outlook.office365.com/owa/calendar/95a5e9a1a2f74f208b8a4b2f7777400b@griffith.edu.au/9d59cd2171d4448da3d24ff30c5ed5923258360342090266040/calendar.ics";
-
-  const webEvents = await ical.async.fromURL(url);
-  const tempConvert = JSON.parse(JSON.stringify(webEvents));
-  const eventsArray = [];
-  const removalArray = [
-    "type",
-    "params",
-    "priority",
-    "transparency",
-    "status",
-    "sequence",
-    "MICROSOFT-CDO-APPT-SEQUENCE",
-    "MICROSOFT-CDO-BUSYSTATUS",
-    "MICROSOFT-CDO-INTENDEDSTATUS",
-    "MICROSOFT-CDO-IMPORTANCE",
-    "MICROSOFT-CDO-INSTTYPE",
-    "MICROSOFT-DONOTFORWARDMEETING",
-    "MICROSOFT-DISALLOW-COUNTER",
-    "method",
-  ];
-  Object.entries(tempConvert).map(([key, value]) => {
-    const newObject = {};
-    removalArray.map((z) => delete value[z]);
-    if (value["MICROSOFT-CDO-ALLDAYEVENT"] === "TRUE") {
-      Object.assign(newObject, (value["allDay"] = true));
-    } else if (value["MICROSOFT-CDO-ALLDAYEVENT"] === "FALSE") {
-      if (
-        value["summary"].split(" ").includes("Week") ||
-        value["summary"].split(" ").includes("PUBLIC")
-      ) {
-        Object.assign(newObject, (value["allDay"] = true));
-      } else {
-        Object.assign(newObject, (value["allDay"] = false));
-      }
-    }
-    if (value["summary"] !== undefined) {
-      Object.assign(newObject, value, {
-        ["title"]: value["summary"].toString(), //.replace(/_/g, " ") consider that we will have more trouble filtering then on client if we do this on server and pass it down
-      });
-    } else {
-      Object.assign(newObject, value, {
-        ["title"]: "",
-      });
-    }
-    eventsArray.push(newObject);
-  });
-  console.log(eventsArray);
-
-  const toJSON = JSON.stringify(eventsArray);
-
-  return {
-    props: { toJSON }, // will be passed to the page component as props
-  };
-}
