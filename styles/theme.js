@@ -51,34 +51,44 @@ export const StyleWrapper = styled.div`
       props.colorMode === "dark"
         ? "var(--chakra-colors-red-400)"
         : "var(--chakra-colors-red-400)"};
-    color: ${(props) =>
-      props.colorMode === "dark"
-        ? "var(--chakra-colors-red-400)"
-        : "var(--chakra-colors-red-400)"};
   }
   .fc-icon-chevron-right:active {
-    background-color: ${(props) =>
-      props.colorMode === "dark"
-        ? "var(--chakra-colors-red-400)"
-        : "var(--chakra-colors-red-400)"};
-    border-color: ${(props) =>
-      props.colorMode === "dark"
-        ? "var(--chakra-colors-red-400)"
-        : "var(--chakra-colors-red-400)"};
     color: #ffffff;
   }
   .fc-icon-chevron-left:active {
-    background-color: ${(props) =>
-      props.colorMode === "dark"
-        ? "var(--chakra-colors-red-400)"
-        : "var(--chakra-colors-red-400)"};
-    border-color: ${(props) =>
-      props.colorMode === "dark"
-        ? "var(--chakra-colors-red-400)"
-        : "var(--chakra-colors-red-400)"};
     color: #ffffff;
   }
   .fc-prev-button:hover {
+    background-color: ${(props) =>
+      props.colorMode === "dark"
+        ? "var(--chakra-colors-red-200)"
+        : "var(--chakra-colors-red-200)"};
+    border-color: ${(props) =>
+      props.colorMode === "dark"
+        ? "var(--chakra-colors-red-200)"
+        : "var(--chakra-colors-red-200)"};
+  }
+  .fc-button-primary:hover {
+    background-color: ${(props) =>
+      props.colorMode === "dark"
+        ? "var(--chakra-colors-red-200)"
+        : "var(--chakra-colors-red-200)"};
+    border-color: ${(props) =>
+      props.colorMode === "dark"
+        ? "var(--chakra-colors-red-200)"
+        : "var(--chakra-colors-red-200)"};
+  }
+  .fc-button-primary:disabled {
+    background-color: ${(props) =>
+      props.colorMode === "dark"
+        ? "var(--chakra-colors-red-200)"
+        : "var(--chakra-colors-red-200)"};
+    border-color: ${(props) =>
+      props.colorMode === "dark"
+        ? "var(--chakra-colors-red-200)"
+        : "var(--chakra-colors-red-200)"};
+  }
+  .fc-button-primary:not(:disabled).fc-button-active {
     background-color: ${(props) =>
       props.colorMode === "dark"
         ? "var(--chakra-colors-red-200)"
