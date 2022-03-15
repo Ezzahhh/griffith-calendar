@@ -91,12 +91,12 @@ export const StyleWrapper = styled.div`
   .fc-button-primary:not(:disabled).fc-button-active {
     background-color: ${(props) =>
       props.colorMode === "dark"
-        ? "var(--chakra-colors-red-200)"
-        : "var(--chakra-colors-red-200)"};
+        ? "var(--chakra-colors-red-900)"
+        : "var(--chakra-colors-red-900)"};
     border-color: ${(props) =>
       props.colorMode === "dark"
-        ? "var(--chakra-colors-red-200)"
-        : "var(--chakra-colors-red-200)"};
+        ? "var(--chakra-colors-red-900)"
+        : "var(--chakra-colors-red-900)"};
   }
 `;
 
