@@ -6,7 +6,7 @@ Additional functionality will allow selection of "Pathways" depending on user pr
 
 TODO:
 
-- Either on server-side or client-side make the events prettier by removing underscores and replacing with spaces
+- Filter based on Groups A-D and locations (Tweed and Logan) to allow users to pick events and generate subscriptable ICS calendars
 
 ## Disclaimers
 
