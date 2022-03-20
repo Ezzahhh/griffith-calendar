@@ -15,14 +15,11 @@ export default async function handler(req, res) {
         end: event.end,
         summary: event.summary,
         location: event.location,
+        allDay: event.allDay,
       });
     }
   });
   console.log(req.query.test);
 
-  const downloadURL = calendar.serve(res);
-
-  // res.status(200).send(downloadURL);
+  calendar.serve(res, "mycalendar.ics");
 }
-
-// pass parameters into this with filtered data
