@@ -19,7 +19,7 @@
     "@fullcalendar/timegrid": "5.10.1",
     "blob-polyfill": "6.0.20211015",
     "framer-motion": "6.2.8",
-    "ical-generator": "3.2.1",
+    "ical-generator": "3.4.0",
     "lodash": "4.17.21",
     "next": "12.1.0",
     "next-transpile-modules": "9.0.0",
