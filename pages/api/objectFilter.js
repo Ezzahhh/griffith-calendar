@@ -3,9 +3,14 @@ import { range } from "lodash";
 
 export default async function handler(req, res) {
   const fullSet = await axios.get("http://localhost:3000/api/getCal");
-  objectFilter(fullSet.data);
-  res.status(200).json();
+  const filtered = await objectFilter(fullSet.data);
+  res.status(200).json(filtered);
 }
+
+let add = (obj, key, val) => {
+  if (key in obj) obj[key] = [].concat(obj[key], val);
+  else obj[key] = val;
+};
 
 async function objectFilter(fullSet) {
   // Loop getCal return list of objects
@@ -13,13 +18,8 @@ async function objectFilter(fullSet) {
   // if found add object to structure depending on regex that hits like above
   // then on the front-end we need to get that object, depending on the select drop-down used of pathways/locations, we join all the child objects into a list + global events, feed to FullCallendar to display
   // subscriptable ICS will be sent req body with pathway and groups, ICS will be dynammically generated with this filter
-  // Object structure:
-  // { Pathway 1: {} contains only events that are specific to this pathway
-  //   Pathway 2: {}
-  //   Tweed: { Group A : {} }
-  //   Logan: { Group A: {} }
-  //   ...
-  //   }
+  const returnObj = {};
+  const forAll = {};
 
   const listOfRegex = [
     /(P|p)athway[s]?\s\d$/gm, // Pathway 1
@@ -35,6 +35,7 @@ async function objectFilter(fullSet) {
     /(G|g)roup[s]?\sTBA/gm, // Groups TBA
     /(?:G|g)roup[s]?\sTweed \w(,\w+).*$/gm, // Groups Tweed A,B,C
     /Tweed\s(G|g)roup[s]?\s(\w)$/gm, // Tweed Group C
+    //Logan A,B,C,D
   ];
 
   fullSet.map((eventObj) => {
@@ -49,7 +50,7 @@ async function objectFilter(fullSet) {
           if (found !== null && reg === listOfRegex[0]) {
             // ["Pathways", "1"]
             const spaceSplit = found[0].split(" ")[1];
-            // console.log(spaceSplit);
+            add(returnObj, "Pathway " + spaceSplit, eventObj);
           }
           if (found !== null && reg === listOfRegex[1]) {
             // ["Pathways", "1,2,3", "&", "4"]
@@ -58,6 +59,9 @@ async function objectFilter(fullSet) {
             spaceSplit.splice(spaceSplit.indexOf("&"), 1);
             const poggers = spaceSplit[0].split(",");
             poggers.push(spaceSplit[1]);
+            poggers.map((pathway) => {
+              add(returnObj, "Pathway " + pathway, eventObj);
+            });
             // console.log(poggers);
           }
           if (found !== null && reg === listOfRegex[2]) {
@@ -65,17 +69,26 @@ async function objectFilter(fullSet) {
             const spaceSplit = found[0].split(" ")[1].split("&");
             const poggers = spaceSplit[0].split(",");
             poggers.push(spaceSplit[1]);
+            poggers.map((pathway) => {
+              add(returnObj, "Pathway " + pathway, eventObj);
+            });
             // console.log(poggers);
           }
           if (found !== null && reg === listOfRegex[3]) {
             // ["Pathways", "1,2,3,4"]
             const spaceSplit = found[0].split(" ")[1].split(",");
+            spaceSplit.map((pathway) => {
+              add(returnObj, "Pathway " + pathway, eventObj);
+            });
             // console.log(spaceSplit);
           }
           if (found !== null && reg === listOfRegex[4]) {
             // ["Pathways", "5-8"]
             const spaceSplit = found[0].split(" ")[1].split("-");
             const res = range(spaceSplit[0], spaceSplit[1]);
+            res.map((pathway) => {
+              add(returnObj, "Pathway " + pathway, eventObj);
+            });
             // console.log(res);
           }
           if (found !== null && reg === listOfRegex[5]) {
@@ -83,53 +96,81 @@ async function objectFilter(fullSet) {
             const spaceSplit = found[0].split(" ");
             spaceSplit.shift();
             spaceSplit.splice(spaceSplit.indexOf("&"), 1);
+            spaceSplit.map((pathway) => {
+              add(returnObj, "Pathway " + pathway, eventObj);
+            });
             // console.log(spaceSplit);
           }
           if (found !== null && reg === listOfRegex[6]) {
             // ["Groups", "1-6"]
             const spaceSplit = found[0].split(" ")[1].split("-");
             const res = range(spaceSplit[0], spaceSplit[1]);
+            res.map((group) => {
+              add(returnObj, "Group " + group, eventObj);
+            });
             // console.log(spaceSplit);
           }
           if (found !== null && reg === listOfRegex[7]) {
             // ["Pathways", "11&12"]
             const spaceSplit = found[0].split(" ")[1].split("&");
+            spaceSplit.map((pathway) => {
+              add(returnObj, "Pathway " + pathway, eventObj);
+            });
             // console.log(spaceSplit);
           }
           if (found !== null && reg === listOfRegex[8]) {
             // ["Groups", "Tweed", "D"]
             const spaceSplit = found[0].split(" ");
             spaceSplit.shift();
+            add(
+              returnObj,
+              spaceSplit[0] + " " + "Group" + " " + spaceSplit[1],
+              eventObj
+            );
             // console.log(spaceSplit);
           }
           if (found !== null && reg === listOfRegex[9]) {
             // ["Logan", "Groups", "A"]
             const spaceSplit = found[0].split(" ");
             spaceSplit.splice(spaceSplit.indexOf("Group"), 1);
+            add(
+              returnObj,
+              spaceSplit[0] + " " + "Group" + " " + spaceSplit[1],
+              eventObj
+            );
             // console.log(spaceSplit);
           }
           if (found !== null && reg === listOfRegex[10]) {
             // ["Groups", "TBA"]
             const spaceSplit = found[0].split(" ")[1];
+            returnObj["Group TBA"] = eventObj;
             // console.log(spaceSplit);
           }
           if (found !== null && reg === listOfRegex[11]) {
-            // ["Tweed", "Group", "C"]
+            // ["Groups", "Tweed", "A,B,C"]
             const spaceSplit = found[0].split(" ");
             spaceSplit.shift();
             spaceSplit.splice(spaceSplit.indexOf("Group"), 1);
-            spaceSplit.splice(spaceSplit.indexOf("Tweed"), 1);
-            const res = spaceSplit[0].split(",");
+            const res = spaceSplit[1].split(",");
+            res.map((group) => {
+              add(returnObj, "Tweed " + "Group " + group, eventObj);
+            });
             // console.log(res);
           }
           if (found !== null && reg === listOfRegex[12]) {
             // ["Tweed", "Group", "C"]
             const spaceSplit = found[0].split(" ");
-            const popLast = spaceSplit.pop();
+            spaceSplit.splice(spaceSplit.indexOf("Group"), 1);
+            add(
+              returnObj,
+              spaceSplit[0] + " " + "Group" + " " + spaceSplit[1],
+              eventObj
+            );
             // console.log(popLast);
           }
         });
       });
     }
   });
+  return returnObj;
 }

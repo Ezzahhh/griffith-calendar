@@ -42,6 +42,11 @@ function MyApp() {
     isLoading: true,
     results: [],
   });
+  const [customFetch, setCustomFetch] = useState({
+    isLoading: true,
+    results: [],
+  });
+  const [selectValues, setSelectValues] = useState();
   const calendarRef = useRef();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const myEvent = useRef({
@@ -100,11 +105,24 @@ function MyApp() {
   const getEventData = async () => {
     const response = await axios.get("/api/getCal");
     setCalendarFetchResults({ isLoading: false, results: response.data });
-    // return response.data;
+  };
+
+  const customEvents = async () => {
+    const response = await axios.get("/api/objectFilter");
+    setCustomFetch({ isLoading: false, results: response.data });
+    const selectList = [];
+    Object.keys(response.data).map((k) => {
+      selectList.push(k);
+    });
+    selectList.sort();
+    const finalList = [];
+    selectList.map((x) => finalList.push({ label: x, value: x }));
+    setSelectValues(finalList);
   };
 
   useEffect(() => {
     getEventData();
+    customEvents();
   }, []);
 
   return (
@@ -156,7 +174,7 @@ function MyApp() {
                   {/* <FormLabel>Select:</FormLabel> */}
                   <MultiSelect
                     isMulti
-                    options={[{ label: "test", value: "test" }]}
+                    options={selectValues}
                     placeholder="Select your pathways/groups..."
                     closeMenuOnSelect={false}
                     selectedOptionStyle="check"
