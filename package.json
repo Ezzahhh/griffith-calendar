@@ -21,7 +21,7 @@
     "framer-motion": "6.2.8",
     "ical-generator": "3.4.0",
     "lodash": "4.17.21",
-    "next": "12.1.0",
+    "next": "12.1.1",
     "next-transpile-modules": "9.0.0",
     "node-ical": "0.15.1",
     "react": "17.0.2",
@@ -30,6 +30,6 @@
   },
   "devDependencies": {
     "eslint": "8.11.0",
-    "eslint-config-next": "12.1.0"
+    "eslint-config-next": "12.1.1"
   }
 }
