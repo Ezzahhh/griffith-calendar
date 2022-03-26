@@ -208,7 +208,7 @@ function MyApp() {
             size="xl"
           >
             <ModalOverlay />
-            <ModalContent>
+            <ModalContent top="10rem">
               <ModalHeader>Event Details</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
