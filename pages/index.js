@@ -17,7 +17,10 @@ import {
   useColorMode,
   useColorModeValue,
   Spinner,
+  FormControl,
+  FormLabel,
 } from "@chakra-ui/react";
+import { Select as MultiSelect } from "chakra-react-select";
 import { ColorModeSwitcher } from "../src/components/ColorModeSwitcher";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -147,57 +150,72 @@ function MyApp() {
               transition={{ duration: 1 }}
             />
           ) : (
-            <MotionBox
-              w="100%"
-              borderRadius="xl"
-              boxShadow="2xl"
-              borderWidth={2}
-              p={6}
-              initial={{ y: "5vh", opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ ease: "easeIn", duration: 0.8 }}
-            >
-              <StyleWrapper colorMode={colorMode}>
-                <FullCalendar
-                  plugins={[timeGridPlugin, dayGridPlugin]}
-                  initialView="timeGridWeek"
-                  headerToolbar={{
-                    left: "prev,next today",
-                    center: "title",
-                    right: "timeGridWeek,timeGridDay,dayGridMonth",
-                  }}
-                  weekends={false}
-                  events={calendarFetchResults.results}
-                  eventClick={handleClick}
-                  dayMaxEvents={true}
-                  ref={calendarRef}
-                  views={{
-                    dayGridMonth: {
-                      dayHeaderFormat: {
-                        weekday: "short",
+            <>
+              <MotionBox w="100%">
+                <FormControl mb={5}>
+                  {/* <FormLabel>Select:</FormLabel> */}
+                  <MultiSelect
+                    isMulti
+                    options={[{ label: "test", value: "test" }]}
+                    placeholder="Select your pathways/groups..."
+                    closeMenuOnSelect={false}
+                    selectedOptionStyle="check"
+                    hideSelectedOptions={false}
+                  />
+                </FormControl>
+              </MotionBox>
+              <MotionBox
+                w="100%"
+                borderRadius="xl"
+                boxShadow="2xl"
+                borderWidth={2}
+                p={6}
+                initial={{ y: "5vh", opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ ease: "easeIn", duration: 0.8 }}
+              >
+                <StyleWrapper colorMode={colorMode}>
+                  <FullCalendar
+                    plugins={[timeGridPlugin, dayGridPlugin]}
+                    initialView="timeGridWeek"
+                    headerToolbar={{
+                      left: "prev,next today",
+                      center: "title",
+                      right: "timeGridWeek,timeGridDay,dayGridMonth",
+                    }}
+                    weekends={false}
+                    events={calendarFetchResults.results}
+                    eventClick={handleClick}
+                    dayMaxEvents={true}
+                    ref={calendarRef}
+                    views={{
+                      dayGridMonth: {
+                        dayHeaderFormat: {
+                          weekday: "short",
+                        },
                       },
-                    },
-                    dayGrid: {
-                      dayHeaderFormat: {
-                        weekday: "short",
-                        day: "numeric",
-                        month: "long",
-                        omitCommas: true,
+                      dayGrid: {
+                        dayHeaderFormat: {
+                          weekday: "short",
+                          day: "numeric",
+                          month: "long",
+                          omitCommas: true,
+                        },
                       },
-                    },
-                    timeGrid: {
-                      dayHeaderFormat: {
-                        weekday: "short",
-                        day: "numeric",
-                        month: "long",
-                        omitCommas: true,
+                      timeGrid: {
+                        dayHeaderFormat: {
+                          weekday: "short",
+                          day: "numeric",
+                          month: "long",
+                          omitCommas: true,
+                        },
                       },
-                    },
-                  }}
-                />
-              </StyleWrapper>
-            </MotionBox>
+                    }}
+                  />
+                </StyleWrapper>
+              </MotionBox>
+            </>
           )}
           <Modal
             closeOnOverlayClick={false}
