@@ -19,7 +19,7 @@ async function objectFilter(fullSet) {
   // then on the front-end we need to get that object, depending on the select drop-down used of pathways/locations, we join all the child objects into a list + global events, feed to FullCallendar to display
   // subscriptable ICS will be sent req body with pathway and groups, ICS will be dynammically generated with this filter
   const returnObj = {};
-  const boolAddAll = false;
+  let boolAddAll = false;
   const forAll = [];
 
   const listOfRegex = [
@@ -46,8 +46,8 @@ async function objectFilter(fullSet) {
       listOfRegex.map((reg) => {
         const intialiseReg = new RegExp(reg);
         const splitterino = eventObj["summary"].split("_");
+        boolAddAll = false;
         splitterino.map((splitted) => {
-          boolAddAll = false;
           const found = splitted.match(intialiseReg);
           if (found !== null && reg === listOfRegex[0]) {
             // ["Pathways", "1"]
@@ -184,10 +184,10 @@ async function objectFilter(fullSet) {
             // console.log(popLast);
           }
         });
+        if (boolAddAll === false) {
+          forAll.push(eventObj);
+        }
       });
-      if (boolAddAll === false) {
-        forAll.push(eventObj);
-      }
     }
   });
   return returnObj;
