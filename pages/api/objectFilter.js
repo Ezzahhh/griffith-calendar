@@ -66,7 +66,6 @@ async function objectFilter(fullSet) {
               add(returnObj, "Pathway " + pathway, eventObj);
             });
             boolAddAll = true;
-
             // console.log(poggers);
           }
           if (found !== null && reg === listOfRegex[2]) {
@@ -78,7 +77,6 @@ async function objectFilter(fullSet) {
               add(returnObj, "Pathway " + pathway, eventObj);
             });
             boolAddAll = true;
-
             // console.log(poggers);
           }
           if (found !== null && reg === listOfRegex[3]) {
@@ -88,7 +86,6 @@ async function objectFilter(fullSet) {
               add(returnObj, "Pathway " + pathway, eventObj);
             });
             boolAddAll = true;
-
             // console.log(spaceSplit);
           }
           if (found !== null && reg === listOfRegex[4]) {
@@ -99,7 +96,6 @@ async function objectFilter(fullSet) {
               add(returnObj, "Pathway " + pathway, eventObj);
             });
             boolAddAll = true;
-
             // console.log(res);
           }
           if (found !== null && reg === listOfRegex[5]) {
@@ -111,7 +107,6 @@ async function objectFilter(fullSet) {
               add(returnObj, "Pathway " + pathway, eventObj);
             });
             boolAddAll = true;
-
             // console.log(spaceSplit);
           }
           if (found !== null && reg === listOfRegex[6]) {
@@ -122,7 +117,6 @@ async function objectFilter(fullSet) {
               add(returnObj, "Group " + group, eventObj);
             });
             boolAddAll = true;
-
             // console.log(spaceSplit);
           }
           if (found !== null && reg === listOfRegex[7]) {
@@ -132,7 +126,6 @@ async function objectFilter(fullSet) {
               add(returnObj, "Pathway " + pathway, eventObj);
             });
             boolAddAll = true;
-
             // console.log(spaceSplit);
           }
           if (found !== null && reg === listOfRegex[8]) {
@@ -145,7 +138,6 @@ async function objectFilter(fullSet) {
               eventObj
             );
             boolAddAll = true;
-
             // console.log(spaceSplit);
           }
           if (found !== null && reg === listOfRegex[9]) {
@@ -158,7 +150,6 @@ async function objectFilter(fullSet) {
               eventObj
             );
             boolAddAll = true;
-
             // console.log(spaceSplit);
           }
           if (found !== null && reg === listOfRegex[10]) {
@@ -166,7 +157,6 @@ async function objectFilter(fullSet) {
             const spaceSplit = found[0].split(" ")[1];
             returnObj["Group TBA"] = eventObj;
             boolAddAll = true;
-
             // console.log(spaceSplit);
           }
           if (found !== null && reg === listOfRegex[11]) {
@@ -179,7 +169,6 @@ async function objectFilter(fullSet) {
               add(returnObj, "Tweed " + "Group " + group, eventObj);
             });
             boolAddAll = true;
-
             // console.log(res);
           }
           if (found !== null && reg === listOfRegex[12]) {
