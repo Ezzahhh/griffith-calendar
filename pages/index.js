@@ -30,6 +30,7 @@ import Head from "next/head";
 import { motion } from "framer-motion";
 import { StyleWrapper } from "../styles/theme";
 import axios from "axios";
+import { orderBy } from "lodash";
 
 const MotionBox = motion(Box);
 const MotionContainer = motion(Container);
@@ -56,6 +57,8 @@ function MyApp() {
     end: "",
     allDay: false,
   });
+
+  const handleChange = (e) => {};
 
   const handleClick = (res) => {
     try {
@@ -112,12 +115,10 @@ function MyApp() {
     setCustomFetch({ isLoading: false, results: response.data });
     const selectList = [];
     Object.keys(response.data).map((k) => {
-      selectList.push(k);
+      selectList.push({ label: k, value: k });
     });
-    selectList.sort();
-    const finalList = [];
-    selectList.map((x) => finalList.push({ label: x, value: x }));
-    setSelectValues(finalList);
+    const res = orderBy(selectList, "label", "asc");
+    setSelectValues(res);
   };
 
   useEffect(() => {
@@ -175,6 +176,7 @@ function MyApp() {
                   <MultiSelect
                     isMulti
                     options={selectValues}
+                    onChange={handleChange}
                     placeholder="Select your pathways/groups..."
                     closeMenuOnSelect={false}
                     selectedOptionStyle="check"
