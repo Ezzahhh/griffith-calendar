@@ -20,7 +20,7 @@
     "blob-polyfill": "6.0.20211015",
     "chakra-react-select": "3.1.2",
     "framer-motion": "6.2.8",
-    "ical-generator": "3.4.0",
+    "ical-generator": "3.4.1",
     "lodash": "4.17.21",
     "next": "12.1.1",
     "next-transpile-modules": "9.0.0",
