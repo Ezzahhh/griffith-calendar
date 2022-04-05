@@ -57,6 +57,7 @@ function MyApp() {
     end: "",
     allDay: false,
   });
+  const [calendarState, setCalendarState] = useState();
 
   const handleChange = (e) => {};
 
@@ -113,6 +114,7 @@ function MyApp() {
   const customEvents = async () => {
     const response = await axios.get("/api/objectFilter");
     setCustomFetch({ isLoading: false, results: response.data });
+    setCalendarState(response.data["Rest"]);
     const selectList = [];
     Object.keys(response.data).map((k) => {
       selectList.push({ label: k, value: k });
@@ -205,7 +207,8 @@ function MyApp() {
                       right: "timeGridWeek,timeGridDay,dayGridMonth",
                     }}
                     weekends={false}
-                    events={calendarFetchResults.results}
+                    // events={calendarFetchResults.results}
+                    events={calendarState}
                     eventClick={handleClick}
                     dayMaxEvents={true}
                     ref={calendarRef}

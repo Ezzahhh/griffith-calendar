@@ -43,6 +43,7 @@ async function objectFilter(fullSet) {
     if (eventObj["summary"] !== undefined) {
       // if the summary or title key exists then we can continue
       // then we loop through our list of regex for each event obj
+      // compare all events with the final result; those that don't appear in the final result will be added to "Rest"
       listOfRegex.map((reg) => {
         const intialiseReg = new RegExp(reg);
         const splitterino = eventObj["summary"].split("_");
@@ -190,5 +191,8 @@ async function objectFilter(fullSet) {
       });
     }
   });
+  const newSet = [...new Set(forAll)];
+  console.log(newSet);
+  returnObj["Rest"] = newSet;
   return returnObj;
 }
