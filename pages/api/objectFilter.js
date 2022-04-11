@@ -17,26 +17,27 @@ async function objectFilter(fullSet) {
   // get 'summary' field and filter by above regex
   // if found add object to structure depending on regex that hits like above
   // then on the front-end we need to get that object, depending on the select drop-down used of pathways/locations, we join all the child objects into a list + global events, feed to FullCallendar to display
-  // subscriptable ICS will be sent req body with pathway and groups, ICS will be dynammically generated with this filter
+  // subscriptable ICS will be sent req body with pathway and groups, ICS will be dynamically generated with this filter
   const returnObj = {};
   let boolAddAll = false;
   const forAll = [];
 
   const listOfRegex = [
-    /(P|p)athway[s]?\s\d$/gm, // Pathway 1
-    /(P|p)athway[s]?s\s\d+(,\d+).* & \d+$/gm, // P|pathways 1,2,11 & 12
+    /(?:P|p)athway[s]?\s(?:\d)*$/gm, // Pathway 1
+    /(?:P|p)athway[s]?\s\d+(,\d+).* & \d+$/gm, // P|pathways 1,2,11 & 12
     /(?:P|p)athway[s]?\s\d+(?:,\d+)+&\d+$/gm, // pathways 1,2,3&4
     /(?:P|p)athway[s]?\s\d+(?:,\d+)+$/gm, // Pathways 7,8,9,10,11,12
-    /(P|p)athway[s]?\s\d+(\d+)*-\d+/gm, // Pathways 5-8
-    /(P|p)athway[s]?\s\d+(\d+)(\s)*&(\s)*(\d+)*$/gm, // Pathways 11 & 12
-    /(G|g)roup[s]?\s\d+(\d+)*-\d+/gm, // Groups 1-6
-    /(P|p)athway[s]?\s\d&\d/gm, // Pathway 7&8
-    /(G|g)roup[s]?\sTweed (\w)/gm, // Groups Tweed D
-    /(L|l)ogan Group[s]? \w$/gm, // Logan Groups A
-    /(G|g)roup[s]?\sTBA/gm, // Groups TBA
+    /(?:P|p)athway[s]?\s\d+(\d+)*-\d+/gm, // Pathways 5-8
+    /(?:P|p)athway[s]?\s(\d+)(\s)*&(\s)*(\d+)*$/gm, // Pathways 11 & 12
+    /(?:G|g)roup[s]?\s\d+(\d+)*-\d+/gm, // Groups 1-6
+    /(?:P|p)athway[s]?\s\d&\d/gm, // Pathway 7&8
+    /(?:G|g)roup[s]?\sTweed (\w)/gm, // Groups Tweed D
+    /(?:L|l)ogan Group[s]? \w$/gm, // Logan Groups A
+    /(?:G|g)roup[s]?\sTBA/gm, // Groups TBA
     /(?:G|g)roup[s]?\sTweed \w(,\w+).*$/gm, // Groups Tweed A,B,C
-    /Tweed\s(G|g)roup[s]?\s(\w)$/gm, // Tweed Group C
+    /Tweed\s(?:G|g)roup[s]?\s(\w)$/gm, // Tweed Group C
     //Logan A,B,C,D
+    // GC_Y2_Tutorial_Pathways 3&4, 9&10_D&P_Comm skills_Neuropsych presentations 1_Kwong Chan & Linda Humphreys
   ];
 
   fullSet.map((eventObj) => {
@@ -44,10 +45,10 @@ async function objectFilter(fullSet) {
       // if the summary or title key exists then we can continue
       // then we loop through our list of regex for each event obj
       // compare all events with the final result; those that don't appear in the final result will be added to "Rest"
+      boolAddAll = false;
       listOfRegex.map((reg) => {
         const intialiseReg = new RegExp(reg);
         const splitterino = eventObj["summary"].split("_");
-        boolAddAll = false;
         splitterino.map((splitted) => {
           const found = splitted.match(intialiseReg);
           if (found !== null && reg === listOfRegex[0]) {
@@ -185,10 +186,10 @@ async function objectFilter(fullSet) {
             // console.log(popLast);
           }
         });
-        if (boolAddAll === false) {
-          forAll.push(eventObj);
-        }
       });
+      if (boolAddAll === false) {
+        forAll.push(eventObj);
+      }
     }
   });
   const newSet = [...new Set(forAll)];

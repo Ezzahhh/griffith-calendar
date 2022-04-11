@@ -18,7 +18,6 @@ import {
   useColorModeValue,
   Spinner,
   FormControl,
-  FormLabel,
 } from "@chakra-ui/react";
 import { Select as MultiSelect } from "chakra-react-select";
 import { ColorModeSwitcher } from "../src/components/ColorModeSwitcher";
@@ -117,14 +116,16 @@ function MyApp() {
     setCalendarState(response.data["Rest"]);
     const selectList = [];
     Object.keys(response.data).map((k) => {
-      selectList.push({ label: k, value: k });
+      if (k !== "Rest") {
+        selectList.push({ label: k, value: k });
+      }
     });
     const res = orderBy(selectList, "label", "asc");
     setSelectValues(res);
   };
 
   useEffect(() => {
-    getEventData();
+    // getEventData();
     customEvents();
   }, []);
 
@@ -161,7 +162,7 @@ function MyApp() {
           alignItems="center"
           alignContent="center"
         >
-          {calendarFetchResults.isLoading ? (
+          {customFetch.isLoading ? (
             <MotionSpinner
               color="red.500"
               size="xl"
