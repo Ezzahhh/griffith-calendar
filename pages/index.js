@@ -29,7 +29,7 @@ import Head from "next/head";
 import { motion } from "framer-motion";
 import { StyleWrapper } from "../styles/theme";
 import axios from "axios";
-import { orderBy } from "lodash";
+import { orderBy, merge } from "lodash";
 
 const MotionBox = motion(Box);
 const MotionContainer = motion(Container);
@@ -57,8 +57,42 @@ function MyApp() {
     allDay: false,
   });
   const [calendarState, setCalendarState] = useState();
+  const [fullCalData, setFullCalData] = useState();
 
-  const handleChange = (e) => {};
+  function shallowEqual(object1, object2) {
+    const keys1 = Object.keys(object1);
+    const keys2 = Object.keys(object2);
+    if (keys1.length !== keys2.length) {
+      return false;
+    }
+    for (let key of keys1) {
+      if (object1[key] !== object2[key]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  const handleChange = (e) => {
+    console.log(e);
+    const api = calendarRef.current.getApi();
+    api.removeAllEvents();
+    calendarState.map((x) => {
+      api.addEvent(x);
+    });
+    e.map((x) => {
+      const keyValue = x.value;
+      console.log(fullCalData[keyValue]);
+      const api = calendarRef.current.getApi();
+      if (Array.isArray(fullCalData[keyValue])) {
+        fullCalData[keyValue].map((x) => {
+          api.addEvent(x);
+        });
+      } else {
+        api.addEvent(fullCalData[keyValue]);
+      }
+    });
+  };
 
   const handleClick = (res) => {
     try {
@@ -113,6 +147,7 @@ function MyApp() {
   const customEvents = async () => {
     const response = await axios.get("/api/objectFilter");
     setCustomFetch({ isLoading: false, results: response.data });
+    setFullCalData(response.data);
     setCalendarState(response.data["Rest"]);
     const selectList = [];
     Object.keys(response.data).map((k) => {
