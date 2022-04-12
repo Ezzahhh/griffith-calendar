@@ -256,7 +256,7 @@ function MyApp() {
                         navigator.clipboard.writeText(urlState);
                         toast({
                           title: "Success",
-                          description: "Successfully copied to clipboard!",
+                          description: "Copied to clipboard!",
                           status: "success",
                           position: "top-left",
                           duration: 2000,
