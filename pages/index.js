@@ -41,6 +41,7 @@ const MotionSpinner = motion(Spinner);
 
 function MyApp() {
   console.log("rendering...");
+  const toast = useToast();
   const { colorMode, toggleColorMode } = useColorMode();
   const [urlState, setURLState] = useState();
   const [calendarFetchResults, setCalendarFetchResults] = useState({
@@ -63,20 +64,6 @@ function MyApp() {
   });
   const [calendarState, setCalendarState] = useState();
   const [fullCalData, setFullCalData] = useState();
-
-  function shallowEqual(object1, object2) {
-    const keys1 = Object.keys(object1);
-    const keys2 = Object.keys(object2);
-    if (keys1.length !== keys2.length) {
-      return false;
-    }
-    for (let key of keys1) {
-      if (object1[key] !== object2[key]) {
-        return false;
-      }
-    }
-    return true;
-  }
 
   const handleChange = (e) => {
     console.log(e);
@@ -228,37 +215,52 @@ function MyApp() {
             />
           ) : (
             <>
-              <MotionBox w="100%">
-                <FormControl mb={5}>
-                  <MultiSelect
-                    isMulti
-                    options={selectValues}
-                    onChange={handleChange}
-                    placeholder="Select your pathways/groups..."
-                    closeMenuOnSelect={false}
-                    selectedOptionStyle="check"
-                    hideSelectedOptions={false}
+              <MotionBox w="100%" mb={5}>
+                <MultiSelect
+                  isMulti
+                  options={selectValues}
+                  onChange={handleChange}
+                  placeholder="Select your pathways/groups..."
+                  closeMenuOnSelect={false}
+                  selectedOptionStyle="check"
+                  hideSelectedOptions={false}
+                  menuPortalTarget={document.body}
+                  styles={{
+                    menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+                  }}
+                  menuPosition={"fixed"}
+                />
+                <InputGroup mt={3}>
+                  <Input
+                    variant="filled"
+                    placeholder="Calendar URL"
+                    onChange={icsURL}
+                    value={urlState}
                   />
-                  <InputGroup mt={3}>
-                    <Input
-                      variant="filled"
-                      placeholder="Calendar URL"
-                      onChange={icsURL}
-                      value={urlState}
-                    />
-                    <InputRightElement width="4.5rem">
-                      <Button
-                        h="1.75rem"
-                        size="sm"
-                        onClick={() => {
-                          navigator.clipboard.writeText(urlState);
-                        }}
-                      >
-                        Copy
-                      </Button>
-                    </InputRightElement>
-                  </InputGroup>
-                </FormControl>
+                  <InputRightElement width="4.5rem">
+                    <Button
+                      menuPortalTarget={document.body}
+                      styles={{
+                        menuPortal: (base) => ({ ...base, zIndex: 9998 }),
+                      }}
+                      h="1.75rem"
+                      size="sm"
+                      onClick={() => {
+                        navigator.clipboard.writeText(urlState);
+                        toast({
+                          title: "Success",
+                          description: "Successfully copied to clipboard!",
+                          status: "success",
+                          position: "top-left",
+                          duration: 2000,
+                          isClosable: true,
+                        });
+                      }}
+                    >
+                      Copy
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
               </MotionBox>
               <MotionBox
                 w="100%"
