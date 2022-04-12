@@ -23,7 +23,7 @@
     "ical-generator": "3.4.1",
     "lodash": "4.17.21",
     "natural-orderby": "^2.0.3",
-    "next": "12.1.4",
+    "next": "12.1.5",
     "next-transpile-modules": "9.0.0",
     "node-ical": "0.15.1",
     "react": "17.0.2",
@@ -32,6 +32,6 @@
   },
   "devDependencies": {
     "eslint": "8.13.0",
-    "eslint-config-next": "12.1.4"
+    "eslint-config-next": "12.1.5"
   }
 }
