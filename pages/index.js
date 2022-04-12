@@ -21,6 +21,7 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  useToast,
 } from "@chakra-ui/react";
 import { Select as MultiSelect } from "chakra-react-select";
 import { ColorModeSwitcher } from "../src/components/ColorModeSwitcher";
@@ -77,18 +78,16 @@ function MyApp() {
     return true;
   }
 
-  function getUniqueListBy(arr, key) {
-    return [...new Map(arr.map((item) => [item[key], item])).values()];
-  }
-
   const handleChange = (e) => {
     console.log(e);
+    const selectionList = [];
     const toAdd = [];
     calendarState.map((x) => {
       toAdd.push(x);
     });
     e.map((x) => {
       const keyValue = x.value;
+      selectionList.push(keyValue);
       console.log(fullCalData[keyValue]);
       if (Array.isArray(fullCalData[keyValue])) {
         fullCalData[keyValue].map((x) => {
@@ -105,7 +104,10 @@ function MyApp() {
     nonDup.map((x) => {
       api.addEvent(x);
     });
-    // add all above into an array, not adding event yet, then we use uniq to remove duplicates and then loop through that result by calling addEvent
+    setURLState(
+      "https://med.ezzah.dev/ics?selection=" +
+        Buffer.from(selectionList.toString()).toString("base64")
+    );
   };
 
   const handleClick = (res) => {
@@ -243,7 +245,6 @@ function MyApp() {
                       placeholder="Calendar URL"
                       onChange={icsURL}
                       value={urlState}
-                      isDisabled
                     />
                     <InputRightElement width="4.5rem">
                       <Button
