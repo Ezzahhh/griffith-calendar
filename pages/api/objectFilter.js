@@ -36,8 +36,9 @@ async function objectFilter(fullSet) {
     /(?:G|g)roup[s]?\sTBA/gm, // Groups TBA
     /(?:G|g)roup[s]?\sTweed \w(,\w+).*$/gm, // Groups Tweed A,B,C
     /Tweed\s(?:G|g)roup[s]?\s(\w)$/gm, // Tweed Group C
-    //Logan A,B,C,D
-    // GC_Y2_Tutorial_Pathways 3&4, 9&10_D&P_Comm skills_Neuropsych presentations 1_Kwong Chan & Linda Humphreys
+    /Logan [\w](,[\w]).*/m, //Logan A,B,C,D
+
+    // GC_Y2_DHC_Block 2_Day 1_Groups Tweed D & Logan A,B,C,D_GP Placement
   ];
 
   fullSet.map((eventObj) => {
@@ -68,7 +69,6 @@ async function objectFilter(fullSet) {
               add(returnObj, "Pathway " + pathway, eventObj);
             });
             boolAddAll = true;
-            // console.log(poggers);
           }
           if (found !== null && reg === listOfRegex[2]) {
             // ["Pathways", "1,2,3&4"]
@@ -79,7 +79,6 @@ async function objectFilter(fullSet) {
               add(returnObj, "Pathway " + pathway, eventObj);
             });
             boolAddAll = true;
-            // console.log(poggers);
           }
           if (found !== null && reg === listOfRegex[3]) {
             // ["Pathways", "1,2,3,4"]
@@ -88,7 +87,6 @@ async function objectFilter(fullSet) {
               add(returnObj, "Pathway " + pathway, eventObj);
             });
             boolAddAll = true;
-            // console.log(spaceSplit);
           }
           if (found !== null && reg === listOfRegex[4]) {
             // ["Pathways", "5-8"]
@@ -98,7 +96,6 @@ async function objectFilter(fullSet) {
               add(returnObj, "Pathway " + pathway, eventObj);
             });
             boolAddAll = true;
-            // console.log(res);
           }
           if (found !== null && reg === listOfRegex[5]) {
             // ["Pathways", "11", "&", "12"]
@@ -109,17 +106,15 @@ async function objectFilter(fullSet) {
               add(returnObj, "Pathway " + pathway, eventObj);
             });
             boolAddAll = true;
-            // console.log(spaceSplit);
           }
           if (found !== null && reg === listOfRegex[6]) {
             // ["Groups", "1-6"]
             const spaceSplit = found[0].split(" ")[1].split("-");
-            const res = range(spaceSplit[0], spaceSplit[1]);
+            const res = range(spaceSplit[0], parseInt(spaceSplit[1]) + 1);
             res.map((group) => {
               add(returnObj, "Group " + group, eventObj);
             });
             boolAddAll = true;
-            // console.log(spaceSplit);
           }
           if (found !== null && reg === listOfRegex[7]) {
             // ["Pathways", "11&12"]
@@ -128,7 +123,6 @@ async function objectFilter(fullSet) {
               add(returnObj, "Pathway " + pathway, eventObj);
             });
             boolAddAll = true;
-            // console.log(spaceSplit);
           }
           if (found !== null && reg === listOfRegex[8]) {
             // ["Groups", "Tweed", "D"]
@@ -140,7 +134,6 @@ async function objectFilter(fullSet) {
               eventObj
             );
             boolAddAll = true;
-            // console.log(spaceSplit);
           }
           if (found !== null && reg === listOfRegex[9]) {
             // ["Logan", "Groups", "A"]
@@ -152,14 +145,12 @@ async function objectFilter(fullSet) {
               eventObj
             );
             boolAddAll = true;
-            // console.log(spaceSplit);
           }
           if (found !== null && reg === listOfRegex[10]) {
             // ["Groups", "TBA"]
             const spaceSplit = found[0].split(" ")[1];
             returnObj["Group TBA"] = eventObj;
             boolAddAll = true;
-            // console.log(spaceSplit);
           }
           if (found !== null && reg === listOfRegex[11]) {
             // ["Groups", "Tweed", "A,B,C"]
@@ -171,7 +162,6 @@ async function objectFilter(fullSet) {
               add(returnObj, "Tweed " + "Group " + group, eventObj);
             });
             boolAddAll = true;
-            // console.log(res);
           }
           if (found !== null && reg === listOfRegex[12]) {
             // ["Tweed", "Group", "C"]
@@ -183,7 +173,16 @@ async function objectFilter(fullSet) {
               eventObj
             );
             boolAddAll = true;
-            // console.log(popLast);
+          }
+          if (found !== null && reg === listOfRegex[13]) {
+            // Logan A,B,C,D ["Logan", "A,B,C,D"]
+            const spaceSplit = found[0].split(" ");
+            const split1 = spaceSplit[1].split(",");
+            console.log(spaceSplit);
+            split1.map((x) => {
+              add(returnObj, spaceSplit[0] + " " + "Group" + " " + x, eventObj);
+            });
+            boolAddAll = true;
           }
         });
       });
@@ -193,7 +192,7 @@ async function objectFilter(fullSet) {
     }
   });
   const newSet = [...new Set(forAll)];
-  console.log(newSet);
+  // console.log(newSet);
   returnObj["Rest"] = newSet;
   return returnObj;
 }

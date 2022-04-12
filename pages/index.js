@@ -88,9 +88,7 @@ function MyApp() {
     console.log(nonDup);
     const api = calendarRef.current.getApi();
     api.removeAllEvents();
-    nonDup.map((x) => {
-      api.addEvent(x);
-    });
+    nonDup.map((x) => api.addEvent(x));
     setURLState(
       "https://med.ezzah.dev/ics?selection=" +
         Buffer.from(selectionList.toString()).toString("base64")
@@ -215,7 +213,14 @@ function MyApp() {
             />
           ) : (
             <>
-              <MotionBox w="100%" mb={5}>
+              <MotionBox
+                w="100%"
+                mb={5}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 1 }}
+              >
                 <MultiSelect
                   isMulti
                   options={selectValues}
