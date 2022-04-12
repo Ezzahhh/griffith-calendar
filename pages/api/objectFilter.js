@@ -37,8 +37,9 @@ async function objectFilter(fullSet) {
     /(?:G|g)roup[s]?\sTweed \w(,\w+).*$/gm, // Groups Tweed A,B,C
     /Tweed\s(?:G|g)roup[s]?\s(\w)$/gm, // Tweed Group C
     /Logan [\w](,[\w]).*/m, //Logan A,B,C,D
-
-    // GC_Y2_DHC_Block 2_Day 1_Groups Tweed D & Logan A,B,C,D_GP Placement
+    /Group GCUH [\w]/m, // Group GCUH A
+    /^Group [\w]$/m, // Group A (GCUH)
+    // Pathways 1-6 + SCUH pathways 4,5,6
   ];
 
   fullSet.map((eventObj) => {
@@ -72,13 +73,18 @@ async function objectFilter(fullSet) {
           }
           if (found !== null && reg === listOfRegex[2]) {
             // ["Pathways", "1,2,3&4"]
-            const spaceSplit = found[0].split(" ")[1].split("&");
-            const poggers = spaceSplit[0].split(",");
-            poggers.push(spaceSplit[1]);
-            poggers.map((pathway) => {
-              add(returnObj, "Pathway " + pathway, eventObj);
-            });
-            boolAddAll = true;
+            if (
+              splitterino[splitterino.indexOf(splitted) + 1].split(" ")[0] !==
+              "GCUH"
+            ) {
+              const spaceSplit = found[0].split(" ")[1].split("&");
+              const poggers = spaceSplit[0].split(",");
+              poggers.push(spaceSplit[1]);
+              poggers.map((pathway) => {
+                add(returnObj, "Pathway " + pathway, eventObj);
+              });
+              boolAddAll = true;
+            }
           }
           if (found !== null && reg === listOfRegex[3]) {
             // ["Pathways", "1,2,3,4"]
@@ -91,7 +97,7 @@ async function objectFilter(fullSet) {
           if (found !== null && reg === listOfRegex[4]) {
             // ["Pathways", "5-8"]
             const spaceSplit = found[0].split(" ")[1].split("-");
-            const res = range(spaceSplit[0], spaceSplit[1]);
+            const res = range(spaceSplit[0], parseInt(spaceSplit[1]) + 1);
             res.map((pathway) => {
               add(returnObj, "Pathway " + pathway, eventObj);
             });
@@ -107,15 +113,15 @@ async function objectFilter(fullSet) {
             });
             boolAddAll = true;
           }
-          if (found !== null && reg === listOfRegex[6]) {
-            // ["Groups", "1-6"]
-            const spaceSplit = found[0].split(" ")[1].split("-");
-            const res = range(spaceSplit[0], parseInt(spaceSplit[1]) + 1);
-            res.map((group) => {
-              add(returnObj, "Group " + group, eventObj);
-            });
-            boolAddAll = true;
-          }
+          // if (found !== null && reg === listOfRegex[6]) {
+          //   // ["Groups", "1-6"]
+          //   const spaceSplit = found[0].split(" ")[1].split("-");
+          //   const res = range(spaceSplit[0], parseInt(spaceSplit[1]) + 1);
+          //   res.map((group) => {
+          //     add(returnObj, "Group " + group, eventObj);
+          //   });
+          //   boolAddAll = true;
+          // }
           if (found !== null && reg === listOfRegex[7]) {
             // ["Pathways", "11&12"]
             const spaceSplit = found[0].split(" ")[1].split("&");
@@ -146,12 +152,12 @@ async function objectFilter(fullSet) {
             );
             boolAddAll = true;
           }
-          if (found !== null && reg === listOfRegex[10]) {
-            // ["Groups", "TBA"]
-            const spaceSplit = found[0].split(" ")[1];
-            returnObj["Group TBA"] = eventObj;
-            boolAddAll = true;
-          }
+          // if (found !== null && reg === listOfRegex[10]) {
+          //   // ["Groups", "TBA"]
+          //   const spaceSplit = found[0].split(" ")[1];
+          //   returnObj["Group TBA"] = eventObj;
+          //   boolAddAll = true;
+          // }
           if (found !== null && reg === listOfRegex[11]) {
             // ["Groups", "Tweed", "A,B,C"]
             const spaceSplit = found[0].split(" ");
@@ -178,10 +184,31 @@ async function objectFilter(fullSet) {
             // Logan A,B,C,D ["Logan", "A,B,C,D"]
             const spaceSplit = found[0].split(" ");
             const split1 = spaceSplit[1].split(",");
-            console.log(spaceSplit);
             split1.map((x) => {
               add(returnObj, spaceSplit[0] + " " + "Group" + " " + x, eventObj);
             });
+            boolAddAll = true;
+          }
+          if (found !== null && reg === listOfRegex[14]) {
+            // Group GCUH A ["Group", "GCUH", "A"]
+            const spaceSplit = found[0].split(" ");
+            add(
+              returnObj,
+              spaceSplit[1] + " " + "Group" + " " + spaceSplit[2],
+              eventObj
+            );
+
+            boolAddAll = true;
+          }
+          if (found !== null && reg === listOfRegex[15]) {
+            // Group A ["Group", "A"]
+            const spaceSplit = found[0].split(" ");
+            add(
+              returnObj,
+              "GCUH" + " " + "Group" + " " + spaceSplit[1],
+              eventObj
+            );
+
             boolAddAll = true;
           }
         });

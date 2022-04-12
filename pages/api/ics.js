@@ -1,24 +1,30 @@
 import icalgen from "ical-generator";
 import axios from "axios";
 import { Blob } from "blob-polyfill";
+import { uniqBy } from "lodash";
 
 global["Blob"] = Blob;
 
 export default async function handler(req, res) {
-  const decodeSpec = Buffer.from(req.body.selection, "base64")
+  const decodeSpec = Buffer.from(req.query.selection, "base64")
     .toString()
     .split(","); // decode base64 encoding to list
+  decodeSpec.push("Rest");
   console.log(decodeSpec);
 
-  const getCal = await axios.get("http://localhost:3000/api/objectFilter").data; // eventually we will call getICS with filters passed in req.query params
+  const getCal = await axios.get("http://localhost:3000/api/objectFilter"); // eventually we will call getICS with filters passed in req.query params
   const calendar = icalgen();
   const myEvents = [];
 
   decodeSpec.map((x) => {
-    myEvents.push(getCal[x]);
+    getCal.data[x].map((y) => {
+      myEvents.push(y);
+    });
   });
 
-  myEvents.map((event) => {
+  const createUniq = uniqBy(myEvents, "uid");
+
+  createUniq.map((event) => {
     if (event.start !== undefined) {
       calendar.createEvent({
         start: event.start,

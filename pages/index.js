@@ -33,7 +33,8 @@ import Head from "next/head";
 import { motion } from "framer-motion";
 import { StyleWrapper } from "../styles/theme";
 import axios from "axios";
-import { orderBy, uniqBy } from "lodash";
+import { uniqBy } from "lodash";
+import { orderBy } from "natural-orderby";
 
 const MotionBox = motion(Box);
 const MotionContainer = motion(Container);
@@ -90,7 +91,7 @@ function MyApp() {
     api.removeAllEvents();
     nonDup.map((x) => api.addEvent(x));
     setURLState(
-      "https://med.ezzah.dev/ics?selection=" +
+      "https://med.ezzah.dev/api/ics?selection=" +
         Buffer.from(selectionList.toString()).toString("base64")
     );
   };
@@ -160,7 +161,8 @@ function MyApp() {
         selectList.push({ label: k, value: k });
       }
     });
-    const res = orderBy(selectList, "label", "asc");
+    // const res = orderBy(selectList, "label", "asc");
+    const res = orderBy(selectList);
     setSelectValues(res);
   };
 
@@ -172,7 +174,7 @@ function MyApp() {
   return (
     <>
       <Head>
-        <title>Griffith Med Calendar</title>
+        <title>Griffith 2nd Year Med Calendar</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <MotionContainer
@@ -190,7 +192,7 @@ function MyApp() {
           maxW="100%"
         >
           <Box sx={{ visibility: "hidden" }} w="48px" />
-          <Heading>Griffith Med Calendar</Heading>
+          <Heading>Griffith 2nd Year Med Calendar</Heading>
           <ColorModeSwitcher />
         </Flex>
       </MotionContainer>
