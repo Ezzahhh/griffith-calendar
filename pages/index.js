@@ -18,6 +18,9 @@ import {
   useColorModeValue,
   Spinner,
   FormControl,
+  Input,
+  InputGroup,
+  InputRightElement,
 } from "@chakra-ui/react";
 import { Select as MultiSelect } from "chakra-react-select";
 import { ColorModeSwitcher } from "../src/components/ColorModeSwitcher";
@@ -29,7 +32,7 @@ import Head from "next/head";
 import { motion } from "framer-motion";
 import { StyleWrapper } from "../styles/theme";
 import axios from "axios";
-import { orderBy, merge } from "lodash";
+import { orderBy, uniqBy } from "lodash";
 
 const MotionBox = motion(Box);
 const MotionContainer = motion(Container);
@@ -38,6 +41,7 @@ const MotionSpinner = motion(Spinner);
 function MyApp() {
   console.log("rendering...");
   const { colorMode, toggleColorMode } = useColorMode();
+  const [urlState, setURLState] = useState();
   const [calendarFetchResults, setCalendarFetchResults] = useState({
     isLoading: true,
     results: [],
@@ -73,25 +77,35 @@ function MyApp() {
     return true;
   }
 
+  function getUniqueListBy(arr, key) {
+    return [...new Map(arr.map((item) => [item[key], item])).values()];
+  }
+
   const handleChange = (e) => {
     console.log(e);
-    const api = calendarRef.current.getApi();
-    api.removeAllEvents();
+    const toAdd = [];
     calendarState.map((x) => {
-      api.addEvent(x);
+      toAdd.push(x);
     });
     e.map((x) => {
       const keyValue = x.value;
       console.log(fullCalData[keyValue]);
-      const api = calendarRef.current.getApi();
       if (Array.isArray(fullCalData[keyValue])) {
         fullCalData[keyValue].map((x) => {
-          api.addEvent(x);
+          toAdd.push(x);
         });
       } else {
-        api.addEvent(fullCalData[keyValue]);
+        toAdd.push(fullCalData[keyValue]);
       }
     });
+    const nonDup = uniqBy(toAdd, "uid");
+    console.log(nonDup);
+    const api = calendarRef.current.getApi();
+    api.removeAllEvents();
+    nonDup.map((x) => {
+      api.addEvent(x);
+    });
+    // add all above into an array, not adding event yet, then we use uniq to remove duplicates and then loop through that result by calling addEvent
   };
 
   const handleClick = (res) => {
@@ -111,6 +125,10 @@ function MyApp() {
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const icsURL = (res) => {
+    setURLState(res.target.value);
   };
 
   const goNext = () => {
@@ -210,7 +228,6 @@ function MyApp() {
             <>
               <MotionBox w="100%">
                 <FormControl mb={5}>
-                  {/* <FormLabel>Select:</FormLabel> */}
                   <MultiSelect
                     isMulti
                     options={selectValues}
@@ -220,6 +237,26 @@ function MyApp() {
                     selectedOptionStyle="check"
                     hideSelectedOptions={false}
                   />
+                  <InputGroup mt={3}>
+                    <Input
+                      variant="filled"
+                      placeholder="Calendar URL"
+                      onChange={icsURL}
+                      value={urlState}
+                      isDisabled
+                    />
+                    <InputRightElement width="4.5rem">
+                      <Button
+                        h="1.75rem"
+                        size="sm"
+                        onClick={() => {
+                          navigator.clipboard.writeText(urlState);
+                        }}
+                      >
+                        Copy
+                      </Button>
+                    </InputRightElement>
+                  </InputGroup>
                 </FormControl>
               </MotionBox>
               <MotionBox
