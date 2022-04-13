@@ -17,7 +17,6 @@ import {
   useColorMode,
   useColorModeValue,
   Spinner,
-  FormControl,
   Input,
   InputGroup,
   InputRightElement,
@@ -45,10 +44,6 @@ function MyApp() {
   const toast = useToast();
   const { colorMode, toggleColorMode } = useColorMode();
   const [urlState, setURLState] = useState();
-  const [calendarFetchResults, setCalendarFetchResults] = useState({
-    isLoading: true,
-    results: [],
-  });
   const [customFetch, setCustomFetch] = useState({
     isLoading: true,
     results: [],
@@ -86,7 +81,6 @@ function MyApp() {
       }
     });
     const nonDup = uniqBy(toAdd, "uid");
-    console.log(nonDup);
     const api = calendarRef.current.getApi();
     api.removeAllEvents();
     nonDup.map((x) => api.addEvent(x));
@@ -143,11 +137,6 @@ function MyApp() {
   const goMonth = () => {
     const calendarApi = calendarRef.current.getApi();
     calendarApi.changeView("dayGridMonth");
-  };
-
-  const getEventData = async () => {
-    const response = await axios.get("/api/getCal");
-    setCalendarFetchResults({ isLoading: false, results: response.data });
   };
 
   const customEvents = async () => {

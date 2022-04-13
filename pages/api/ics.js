@@ -10,7 +10,6 @@ export default async function handler(req, res) {
     .toString()
     .split(","); // decode base64 encoding to list
   decodeSpec.push("Rest");
-  console.log(decodeSpec);
 
   const getCal = await axios.get("http://localhost:3000/api/objectFilter"); // eventually we will call getICS with filters passed in req.query params
   const calendar = icalgen();
