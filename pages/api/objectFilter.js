@@ -74,8 +74,10 @@ async function objectFilter(fullSet) {
           if (found !== null && reg === listOfRegex[2]) {
             // ["Pathways", "1,2,3&4"]
             if (
-              splitterino[splitterino.indexOf(splitted) + 1].split(" ")[0] !==
-              "GCUH"
+              splitterino[splitterino.indexOf(splitted) + 1].split(" ")[1] !==
+                "GCUH" &&
+              splitterino[splitterino.indexOf(splitted) + 1].split(" ")[1] !==
+                "SCUH"
             ) {
               const spaceSplit = found[0].split(" ")[1].split("&");
               const poggers = spaceSplit[0].split(",");
