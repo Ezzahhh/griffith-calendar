@@ -84,10 +84,14 @@ function MyApp() {
     const api = calendarRef.current.getApi();
     api.removeAllEvents();
     nonDup.map((x) => api.addEvent(x));
-    setURLState(
-      "https://med.ezzah.dev/api/ics?selection=" +
-        Buffer.from(selectionList.toString()).toString("base64")
-    );
+    if (e.length === 0) {
+      setURLState("");
+    } else {
+      setURLState(
+        "https://med.ezzah.dev/api/ics?selection=" +
+          Buffer.from(selectionList.toString()).toString("base64")
+      );
+    }
   };
 
   const handleClick = (res) => {
