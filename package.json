@@ -19,7 +19,7 @@
     "@fullcalendar/timegrid": "5.10.1",
     "blob-polyfill": "7.0.20220408",
     "chakra-react-select": "3.1.2",
-    "framer-motion": "6.2.10",
+    "framer-motion": "6.3.0",
     "ical-generator": "3.4.1",
     "lodash": "4.17.21",
     "natural-orderby": "2.0.3",
