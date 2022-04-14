@@ -22,6 +22,16 @@ export const StyleWrapper = styled.div`
   .fc-toolbar-title {
     font-size: 1.5em;
   }
+  @media screen and (max-width: 642px) {
+    .fc-toolbar.fc-header-toolbar {
+      font-size: 70%;
+    }
+  }
+  @media screen and (max-width: 460px) {
+    .fc-toolbar.fc-header-toolbar {
+      font-size: 50%;
+    }
+  }
 `;
 
 // .fc-button {

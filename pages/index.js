@@ -178,7 +178,12 @@ function MyApp() {
         transition={{ duration: 1 }}
       >
         <Flex
-          justifyContent="space-between"
+          flexDirection={{ base: "column", sm: "column", md: "row" }}
+          justifyContent={{
+            base: "center",
+            sm: "center",
+            md: "space-between",
+          }}
           alignItems="center"
           alignContent="center"
           m={10}
