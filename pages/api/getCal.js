@@ -10,6 +10,7 @@ export default async function handler(req, res) {
     "https://outlook.office365.com/owa/calendar/fb2e290e858f4d65a657568189f87e9d@griffith.edu.au/4d333ff5e7974a4698b8e1d24c38f5782865677652951870724/calendar.ics";
 
   // const url = regions[req.query.region].url;
+  console.log(req.query.region);
   const webEvents = await ical.async.fromURL(
     req.query.region === "null"
       ? regions["Gold Coast"].url

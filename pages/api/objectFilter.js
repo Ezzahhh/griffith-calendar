@@ -75,7 +75,10 @@ async function objectFilter(fullSet, req) {
           }
           if (found !== null && reg === listOfRegex[2]) {
             // ["Pathways", "1,2,3&4"]
-            if (req.query.region === "Gold Coast") {
+            if (
+              req.query.region === "Gold Coast" ||
+              req.query.region === "null"
+            ) {
               if (
                 splitterino[splitterino.indexOf(splitted)].split(" ")[3] !==
                 "SCUH"
@@ -108,7 +111,10 @@ async function objectFilter(fullSet, req) {
           }
           if (found !== null && reg === listOfRegex[4]) {
             // ["Pathways", "5-8"]
-            if (req.query.region === "Gold Coast") {
+            if (
+              req.query.region === "Gold Coast" ||
+              req.query.region === "null"
+            ) {
               const spaceSplit = found[0].split(" ")[1].split("-");
               const res = range(spaceSplit[0], parseInt(spaceSplit[1]) + 1);
               res.map((pathway) => {
