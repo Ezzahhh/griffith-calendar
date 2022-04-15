@@ -4,6 +4,9 @@ export default async function handler(req, res) {
   const url =
     "https://outlook.office365.com/owa/calendar/95a5e9a1a2f74f208b8a4b2f7777400b@griffith.edu.au/9d59cd2171d4448da3d24ff30c5ed5923258360342090266040/calendar.ics";
 
+  // const sunshine_coast =
+  //   "https://outlook.office365.com/owa/calendar/fb2e290e858f4d65a657568189f87e9d@griffith.edu.au/4d333ff5e7974a4698b8e1d24c38f5782865677652951870724/calendar.ics";
+
   const webEvents = await ical.async.fromURL(url);
   const tempConvert = JSON.parse(JSON.stringify(webEvents));
   const eventsArray = [];

@@ -154,8 +154,8 @@ function MyApp() {
         selectList.push({ label: k, value: k });
       }
     });
-    // const res = orderBy(selectList, "label", "asc");
-    const res = orderBy(selectList);
+    const res = orderBy(selectList, "label", "asc");
+    // const res = orderBy(selectList);
     setSelectValues(res);
   };
 

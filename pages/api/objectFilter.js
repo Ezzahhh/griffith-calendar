@@ -38,7 +38,7 @@ async function objectFilter(fullSet) {
     /Tweed\s(?:G|g)roup[s]?\s(\w)$/gm, // Tweed Group C
     /Logan [\w](,[\w]).*/m, //Logan A,B,C,D
     /Group GCUH [\w]/m, // Group GCUH A
-    /^Group [\w]$/m, // Group A (GCUH)
+    /^Group [\D]$/m, // Group A (GCUH)
     // Pathways 1-6 + SCUH pathways 4,5,6
   ];
 
