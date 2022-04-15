@@ -22,6 +22,7 @@ import {
   InputRightElement,
   useToast,
   Select,
+  Center,
 } from "@chakra-ui/react";
 import { Select as MultiSelect } from "chakra-react-select";
 import { ColorModeSwitcher } from "../src/components/ColorModeSwitcher";
@@ -208,21 +209,21 @@ function MyApp() {
           maxW="100%"
         >
           <Box sx={{ visibility: "hidden" }} w="48px" />
-          <HStack>
-            <Heading>Griffith 2nd Year Med Calendar</Heading>
-            {customFetch.isLoading && (
-              <MotionSpinner
-                color="red.500"
-                size="lg"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 1 }}
-              />
-            )}
-          </HStack>
+          <Heading>Griffith 2nd Year Med Calendar</Heading>
           <ColorModeSwitcher />
         </Flex>
+        {customFetch.isLoading && (
+          <Center mb={5}>
+            <MotionSpinner
+              color="red.500"
+              size="lg"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1 }}
+            />
+          </Center>
+        )}
       </MotionContainer>
 
       <Container maxW="5xl">
