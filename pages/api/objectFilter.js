@@ -2,8 +2,10 @@ import axios from "axios";
 import { range } from "lodash";
 
 export default async function handler(req, res) {
-  const fullSet = await axios.get("http://localhost:3000/api/getCal");
-  const filtered = await objectFilter(fullSet.data);
+  const fullSet = await axios.get(
+    `http://localhost:3000/api/getCal?region=${req.query.region}`
+  );
+  const filtered = await objectFilter(fullSet.data, req);
   res.status(200).json(filtered);
 }
 
@@ -12,7 +14,7 @@ let add = (obj, key, val) => {
   else obj[key] = val;
 };
 
-async function objectFilter(fullSet) {
+async function objectFilter(fullSet, req) {
   // Loop getCal return list of objects
   // get 'summary' field and filter by above regex
   // if found add object to structure depending on regex that hits like above
@@ -39,7 +41,7 @@ async function objectFilter(fullSet) {
     /Logan [\w](,[\w]).*/m, //Logan A,B,C,D
     /Group GCUH [\w]/m, // Group GCUH A
     /^Group [\D]$/m, // Group A (GCUH)
-    // Pathways 1-6 + SCUH pathways 4,5,6
+    /^Block \d$/gm, // Block 1
   ];
 
   fullSet.map((eventObj) => {
@@ -73,10 +75,20 @@ async function objectFilter(fullSet) {
           }
           if (found !== null && reg === listOfRegex[2]) {
             // ["Pathways", "1,2,3&4"]
-            if (
-              splitterino[splitterino.indexOf(splitted)].split(" ")[3] !==
-              "SCUH"
-            ) {
+            if (req.query.region === "Gold Coast") {
+              if (
+                splitterino[splitterino.indexOf(splitted)].split(" ")[3] !==
+                "SCUH"
+              ) {
+                const spaceSplit = found[0].split(" ")[1].split("&");
+                const poggers = spaceSplit[0].split(",");
+                poggers.push(spaceSplit[1]);
+                poggers.map((pathway) => {
+                  add(returnObj, "Pathway " + pathway, eventObj);
+                });
+                boolAddAll = true;
+              }
+            } else if (req.query.region === "Sunshine Coast") {
               const spaceSplit = found[0].split(" ")[1].split("&");
               const poggers = spaceSplit[0].split(",");
               poggers.push(spaceSplit[1]);
@@ -96,12 +108,26 @@ async function objectFilter(fullSet) {
           }
           if (found !== null && reg === listOfRegex[4]) {
             // ["Pathways", "5-8"]
-            const spaceSplit = found[0].split(" ")[1].split("-");
-            const res = range(spaceSplit[0], parseInt(spaceSplit[1]) + 1);
-            res.map((pathway) => {
-              add(returnObj, "Pathway " + pathway, eventObj);
-            });
-            boolAddAll = true;
+            if (req.query.region === "Gold Coast") {
+              const spaceSplit = found[0].split(" ")[1].split("-");
+              const res = range(spaceSplit[0], parseInt(spaceSplit[1]) + 1);
+              res.map((pathway) => {
+                add(returnObj, "Pathway " + pathway, eventObj);
+              });
+              boolAddAll = true;
+            } else if (req.query.region === "Sunshine Coast") {
+              if (
+                splitterino[splitterino.indexOf(splitted)].split(" ")[3] !==
+                "SCUH"
+              ) {
+                const spaceSplit = found[0].split(" ")[1].split("-");
+                const res = range(spaceSplit[0], parseInt(spaceSplit[1]) + 1);
+                res.map((pathway) => {
+                  add(returnObj, "Pathway " + pathway, eventObj);
+                });
+                boolAddAll = true;
+              }
+            }
           }
           if (found !== null && reg === listOfRegex[5]) {
             // ["Pathways", "11", "&", "12"]
@@ -210,6 +236,14 @@ async function objectFilter(fullSet) {
             );
 
             boolAddAll = true;
+          }
+          if (found !== null && reg === listOfRegex[16]) {
+            // Block 1 ["Block", "1"]
+            if (req.query.region === "Sunshine Coast") {
+              const spaceSplit = found[0].split(" ");
+              add(returnObj, "GPLP Block " + spaceSplit[1], eventObj);
+              boolAddAll = true;
+            }
           }
         });
       });

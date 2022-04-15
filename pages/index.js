@@ -21,6 +21,7 @@ import {
   InputGroup,
   InputRightElement,
   useToast,
+  Select,
 } from "@chakra-ui/react";
 import { Select as MultiSelect } from "chakra-react-select";
 import { ColorModeSwitcher } from "../src/components/ColorModeSwitcher";
@@ -39,16 +40,20 @@ const MotionBox = motion(Box);
 const MotionContainer = motion(Container);
 const MotionSpinner = motion(Spinner);
 
+const regions = require("../src/extras/outlook.json");
+
 function MyApp() {
   console.log("rendering...");
+  const [region, setRegion] = useState("");
+  const selectInputRef = useRef();
   const toast = useToast();
   const { colorMode, toggleColorMode } = useColorMode();
   const [urlState, setURLState] = useState();
   const [customFetch, setCustomFetch] = useState({
-    isLoading: true,
+    isLoading: false,
     results: [],
   });
-  const [selectValues, setSelectValues] = useState();
+  const [selectValues, setSelectValues] = useState(null);
   const calendarRef = useRef();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const myEvent = useRef({
@@ -88,8 +93,11 @@ function MyApp() {
       setURLState("");
     } else {
       setURLState(
-        "https://med.ezzah.dev/api/ics?selection=" +
-          Buffer.from(selectionList.toString()).toString("base64")
+        `https://med.ezzah.dev/api/ics?region=${Buffer.from(
+          region.toString()
+        ).toString("base64")}&selection=${Buffer.from(
+          selectionList.toString()
+        ).toString("base64")}`
       );
     }
   };
@@ -143,9 +151,18 @@ function MyApp() {
     calendarApi.changeView("dayGridMonth");
   };
 
-  const customEvents = async () => {
-    const response = await axios.get("/api/objectFilter");
-    setCustomFetch({ isLoading: false, results: response.data });
+  const customEvents = async (region) => {
+    const api = calendarRef.current.getApi();
+    api.removeAllEvents();
+    setSelectValues(null);
+    setURLState("");
+    if (region === "") {
+      return;
+    }
+    setCustomFetch({ isLoading: true });
+    setRegion(region);
+    const response = await axios.get(`/api/objectFilter?region=${region}`);
+    setCustomFetch({ isLoading: false });
     setFullCalData(response.data);
     setCalendarState(response.data["Rest"]);
     const selectList = [];
@@ -157,11 +174,12 @@ function MyApp() {
     const res = orderBy(selectList, "label", "asc");
     // const res = orderBy(selectList);
     setSelectValues(res);
+    selectInputRef.current.clearValue(); // clear the multiselect
   };
 
   useEffect(() => {
     // getEventData();
-    customEvents();
+    // customEvents();
   }, []);
 
   return (
@@ -190,7 +208,19 @@ function MyApp() {
           maxW="100%"
         >
           <Box sx={{ visibility: "hidden" }} w="48px" />
-          <Heading>Griffith 2nd Year Med Calendar</Heading>
+          <HStack>
+            <Heading>Griffith 2nd Year Med Calendar</Heading>
+            {customFetch.isLoading && (
+              <MotionSpinner
+                color="red.500"
+                size="lg"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 1 }}
+              />
+            )}
+          </HStack>
           <ColorModeSwitcher />
         </Flex>
       </MotionContainer>
@@ -202,125 +232,135 @@ function MyApp() {
           alignItems="center"
           alignContent="center"
         >
-          {customFetch.isLoading ? (
-            <MotionSpinner
-              color="red.500"
-              size="xl"
+          <>
+            <MotionBox
+              w="100%"
+              mb={5}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 1 }}
-            />
-          ) : (
-            <>
-              <MotionBox
-                w="100%"
-                mb={5}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 1 }}
+            >
+              <Select
+                mb={3}
+                placeholder="Select campus..."
+                onChange={(e) => customEvents(e.target.value)}
               >
-                <MultiSelect
-                  isMulti
-                  options={selectValues}
-                  onChange={handleChange}
-                  placeholder="Select your pathways/groups..."
-                  closeMenuOnSelect={false}
-                  selectedOptionStyle="check"
-                  hideSelectedOptions={false}
-                  menuPortalTarget={document.body}
-                  styles={{
-                    menuPortal: (base) => ({ ...base, zIndex: 9999 }),
-                  }}
-                  menuPosition={"fixed"}
+                {Object.keys(regions).map((x) => {
+                  return (
+                    <option key={x} value={x}>
+                      {x}
+                    </option>
+                  );
+                })}
+              </Select>
+              <MultiSelect
+                isMulti
+                ref={selectInputRef}
+                options={selectValues}
+                onChange={handleChange}
+                placeholder="Select your pathways/groups..."
+                closeMenuOnSelect={false}
+                selectedOptionStyle="check"
+                hideSelectedOptions={false}
+                menuPortalTarget={
+                  typeof window !== "undefined" ? document.body : null
+                }
+                styles={{
+                  menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+                }}
+                menuPosition={"fixed"}
+                isDisabled={selectValues !== null ? false : true}
+              />
+              <InputGroup mt={3}>
+                <Input
+                  variant="filled"
+                  placeholder="Calendar URL"
+                  onChange={icsURL}
+                  value={urlState}
+                  isDisabled={selectValues !== null ? false : true}
                 />
-                <InputGroup mt={3}>
-                  <Input
-                    variant="filled"
-                    placeholder="Calendar URL"
-                    onChange={icsURL}
-                    value={urlState}
-                  />
-                  <InputRightElement width="4.5rem">
-                    <Button
-                      menuPortalTarget={document.body}
-                      styles={{
-                        menuPortal: (base) => ({ ...base, zIndex: 9998 }),
-                      }}
-                      h="1.75rem"
-                      size="sm"
-                      onClick={() => {
-                        navigator.clipboard.writeText(urlState);
-                        toast({
-                          title: "Success",
-                          description: "Copied to clipboard!",
-                          status: "success",
-                          position: "top-left",
-                          duration: 2000,
-                          isClosable: true,
-                        });
-                      }}
-                    >
-                      Copy
-                    </Button>
-                  </InputRightElement>
-                </InputGroup>
-              </MotionBox>
-              <MotionBox
-                w="100%"
-                borderRadius="xl"
-                boxShadow="2xl"
-                borderWidth={2}
-                p={6}
-                initial={{ y: "5vh", opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ ease: "easeIn", duration: 0.8 }}
-              >
-                <StyleWrapper colorMode={colorMode}>
-                  <FullCalendar
-                    plugins={[timeGridPlugin, dayGridPlugin]}
-                    initialView="timeGridWeek"
-                    headerToolbar={{
-                      left: "prev,next today",
-                      center: "title",
-                      right: "timeGridWeek,timeGridDay,dayGridMonth",
+                <InputRightElement width="4.5rem">
+                  <Button
+                    menuPortalTarget={
+                      typeof window !== "undefined" ? document.body : null
+                    }
+                    styles={{
+                      menuPortal: (base) => ({ ...base, zIndex: 9998 }),
                     }}
-                    weekends={false}
-                    // events={calendarFetchResults.results}
-                    events={calendarState}
-                    eventClick={handleClick}
-                    dayMaxEvents={true}
-                    ref={calendarRef}
-                    views={{
-                      dayGridMonth: {
-                        dayHeaderFormat: {
-                          weekday: "short",
-                        },
-                      },
-                      dayGrid: {
-                        dayHeaderFormat: {
-                          weekday: "short",
-                          day: "numeric",
-                          month: "long",
-                          omitCommas: true,
-                        },
-                      },
-                      timeGrid: {
-                        dayHeaderFormat: {
-                          weekday: "short",
-                          day: "numeric",
-                          month: "long",
-                          omitCommas: true,
-                        },
-                      },
+                    h="1.75rem"
+                    size="sm"
+                    onClick={() => {
+                      navigator.clipboard.writeText(urlState);
+                      toast({
+                        title: "Success",
+                        description: "Copied to clipboard!",
+                        status: "success",
+                        position: "top-left",
+                        duration: 2000,
+                        isClosable: true,
+                      });
                     }}
-                  />
-                </StyleWrapper>
-              </MotionBox>
-            </>
-          )}
+                  >
+                    Copy
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
+            </MotionBox>
+            <MotionBox
+              w="100%"
+              borderRadius="xl"
+              boxShadow="2xl"
+              borderWidth={2}
+              p={6}
+              initial={{ y: "5vh", opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ ease: "easeIn", duration: 0.8 }}
+            >
+              <StyleWrapper colorMode={colorMode}>
+                <FullCalendar
+                  plugins={[timeGridPlugin, dayGridPlugin]}
+                  initialView="timeGridWeek"
+                  headerToolbar={{
+                    left: "prev,next today",
+                    center: "title",
+                    right: "timeGridWeek,timeGridDay,dayGridMonth",
+                  }}
+                  weekends={false}
+                  // events={calendarFetchResults.results}
+                  events={calendarState}
+                  eventClick={handleClick}
+                  dayMaxEvents={true}
+                  ref={calendarRef}
+                  views={{
+                    dayGridMonth: {
+                      dayHeaderFormat: {
+                        weekday: "short",
+                      },
+                    },
+                    dayGrid: {
+                      dayHeaderFormat: {
+                        weekday: "short",
+                        day: "numeric",
+                        month: "long",
+                        omitCommas: true,
+                      },
+                    },
+                    timeGrid: {
+                      dayHeaderFormat: {
+                        weekday: "short",
+                        day: "numeric",
+                        month: "long",
+                        omitCommas: true,
+                      },
+                    },
+                  }}
+                />
+              </StyleWrapper>
+            </MotionBox>
+          </>
+
           <Modal
             closeOnOverlayClick={false}
             isOpen={isOpen}
