@@ -6,12 +6,15 @@ import { uniqBy } from "lodash";
 global["Blob"] = Blob;
 
 export default async function handler(req, res) {
+  const decodeRegion = Buffer.from(req.query.region, "base64").toString();
   const decodeSpec = Buffer.from(req.query.selection, "base64")
     .toString()
     .split(","); // decode base64 encoding to list
   decodeSpec.push("Rest");
 
-  const getCal = await axios.get("http://localhost:3000/api/objectFilter"); // eventually we will call getICS with filters passed in req.query params
+  const getCal = await axios.get(
+    `http://localhost:3000/api/objectFilter?region=${decodeRegion}`
+  ); // eventually we will call getICS with filters passed in req.query params
   const calendar = icalgen();
   const myEvents = [];
 
