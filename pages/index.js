@@ -53,7 +53,7 @@ function MyApp() {
     isLoading: false,
     results: [],
   });
-  const [selectValues, setSelectValues] = useState();
+  const [selectValues, setSelectValues] = useState(null);
   const calendarRef = useRef();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const myEvent = useRef({
@@ -97,8 +97,7 @@ function MyApp() {
           region.toString()
         ).toString("base64")}&selection=${Buffer.from(
           selectionList.toString()
-        ).toString("base64")}
-          `
+        ).toString("base64")}`
       );
     }
   };
@@ -160,10 +159,10 @@ function MyApp() {
     if (region === "") {
       return;
     }
-    setCustomFetch({ ...customFetch, isLoading: true });
+    setCustomFetch({ isLoading: true });
     setRegion(region);
     const response = await axios.get(`/api/objectFilter?region=${region}`);
-    setCustomFetch({ isLoading: false, results: response.data });
+    setCustomFetch({ isLoading: false });
     setFullCalData(response.data);
     setCalendarState(response.data["Rest"]);
     const selectList = [];
@@ -265,7 +264,7 @@ function MyApp() {
                 selectedOptionStyle="check"
                 hideSelectedOptions={false}
                 menuPortalTarget={
-                  typeof window !== "undefined" && document.body
+                  typeof window !== "undefined" ? document.body : null
                 }
                 styles={{
                   menuPortal: (base) => ({ ...base, zIndex: 9999 }),
@@ -284,7 +283,7 @@ function MyApp() {
                 <InputRightElement width="4.5rem">
                   <Button
                     menuPortalTarget={
-                      typeof window !== "undefined" && document.body
+                      typeof window !== "undefined" ? document.body : null
                     }
                     styles={{
                       menuPortal: (base) => ({ ...base, zIndex: 9998 }),

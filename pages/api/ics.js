@@ -6,7 +6,10 @@ import { uniqBy } from "lodash";
 global["Blob"] = Blob;
 
 export default async function handler(req, res) {
-  const decodeRegion = Buffer.from(req.query.region, "base64").toString();
+  const decodeRegion =
+    req.query.region !== undefined
+      ? Buffer.from(req.query.region, "base64").toString()
+      : null;
   const decodeSpec = Buffer.from(req.query.selection, "base64")
     .toString()
     .split(","); // decode base64 encoding to list
