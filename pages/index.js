@@ -23,6 +23,7 @@ import {
   useToast,
   Select,
   Center,
+  VStack,
 } from "@chakra-ui/react";
 import { Select as MultiSelect } from "chakra-react-select";
 import { ColorModeSwitcher } from "../src/components/ColorModeSwitcher";
@@ -31,7 +32,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import { useState, useRef, useEffect } from "react";
 import Head from "next/head";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { StyleWrapper } from "../styles/theme";
 import axios from "axios";
 import { uniqBy } from "lodash";
@@ -209,21 +210,40 @@ function MyApp() {
           maxW="100%"
         >
           <Box sx={{ visibility: "hidden" }} w="48px" />
-          <Heading>Griffith 2nd Year Med Calendar</Heading>
+          <VStack>
+            <Heading as="h1" size="2xl">
+              Griffith Med Calendar
+            </Heading>
+            <AnimatePresence>
+              {customFetch.isLoading ? (
+                <MotionBox
+                  w="100%"
+                  mb={5}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 1 }}
+                >
+                  <Center>
+                    <MotionSpinner
+                      color="red.500"
+                      size="lg"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 1 }}
+                    />
+                  </Center>
+                </MotionBox>
+              ) : (
+                <Heading as="h2" size="xl">
+                  2nd Year
+                </Heading>
+              )}
+            </AnimatePresence>
+          </VStack>
           <ColorModeSwitcher />
         </Flex>
-        {customFetch.isLoading && (
-          <Center mb={5}>
-            <MotionSpinner
-              color="red.500"
-              size="lg"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1 }}
-            />
-          </Center>
-        )}
       </MotionContainer>
 
       <Container maxW="5xl">
@@ -242,37 +262,42 @@ function MyApp() {
               exit={{ opacity: 0 }}
               transition={{ duration: 1 }}
             >
-              <Select
-                mb={3}
-                placeholder="Select campus..."
-                onChange={(e) => customEvents(e.target.value)}
-              >
-                {Object.keys(regions).map((x) => {
-                  return (
-                    <option key={x} value={x}>
-                      {x}
-                    </option>
-                  );
-                })}
-              </Select>
-              <MultiSelect
-                isMulti
-                ref={selectInputRef}
-                options={selectValues}
-                onChange={handleChange}
-                placeholder="Select your pathways/groups..."
-                closeMenuOnSelect={false}
-                selectedOptionStyle="check"
-                hideSelectedOptions={false}
-                menuPortalTarget={
-                  typeof window !== "undefined" ? document.body : null
-                }
-                styles={{
-                  menuPortal: (base) => ({ ...base, zIndex: 9999 }),
-                }}
-                menuPosition={"fixed"}
-                isDisabled={selectValues !== null ? false : true}
-              />
+              <Flex justifyContent="space-between" gap="10px">
+                <Select
+                  mb={3}
+                  flexBasis="20%"
+                  placeholder="1. Select campus..."
+                  onChange={(e) => customEvents(e.target.value)}
+                >
+                  {Object.keys(regions).map((x) => {
+                    return (
+                      <option key={x} value={x}>
+                        {x}
+                      </option>
+                    );
+                  })}
+                </Select>
+                <Box flexBasis="80%">
+                  <MultiSelect
+                    isMulti
+                    ref={selectInputRef}
+                    options={selectValues}
+                    onChange={handleChange}
+                    placeholder="2. Select your pathways/groups..."
+                    closeMenuOnSelect={false}
+                    selectedOptionStyle="check"
+                    hideSelectedOptions={false}
+                    menuPortalTarget={
+                      typeof window !== "undefined" ? document.body : null
+                    }
+                    styles={{
+                      menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+                    }}
+                    menuPosition={"fixed"}
+                    isDisabled={selectValues !== null ? false : true}
+                  />
+                </Box>
+              </Flex>
               <InputGroup mt={3}>
                 <Input
                   variant="filled"
