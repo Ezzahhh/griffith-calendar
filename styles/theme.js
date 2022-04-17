@@ -3,8 +3,8 @@ import styled from "@emotion/styled";
 
 // 2. Add your color mode config
 const config = {
-  initialColorMode: "light",
-  useSystemColorMode: false,
+  // initialColorMode: "light",
+  useSystemColorMode: true,
 };
 
 export const StyleWrapper = styled.div`

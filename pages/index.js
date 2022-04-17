@@ -180,8 +180,8 @@ function MyApp() {
   };
 
   useEffect(() => {
-    // getEventData();
-    // customEvents();
+    const api = calendarRef.current.getApi();
+    api.changeView("timeGridWeek"); // the actual view we want
   }, []);
 
   return (
@@ -351,14 +351,13 @@ function MyApp() {
               <StyleWrapper colorMode={colorMode}>
                 <FullCalendar
                   plugins={[timeGridPlugin, dayGridPlugin]}
-                  initialView="timeGridWeek"
+                  initialView="dayGridMonth" // set undesired initial view and then we use useffect to fix it; firefox issues
                   headerToolbar={{
                     left: "prev,next today",
                     center: "title",
                     right: "timeGridWeek,timeGridDay,dayGridMonth",
                   }}
                   weekends={false}
-                  // events={calendarFetchResults.results}
                   events={calendarState}
                   eventClick={handleClick}
                   dayMaxEvents={true}
