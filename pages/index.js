@@ -211,7 +211,7 @@ function MyApp() {
         >
           <Box sx={{ visibility: "hidden" }} w="48px" />
           <VStack>
-            <Heading as="h1" size="2xl">
+            <Heading as="h1" size="2xl" textAlign="center">
               Griffith Med Calendar
             </Heading>
             <AnimatePresence>
@@ -242,7 +242,9 @@ function MyApp() {
               )}
             </AnimatePresence>
           </VStack>
-          <ColorModeSwitcher />
+          <Box mt={{ base: 3, sm: 3, md: 0 }}>
+            <ColorModeSwitcher />
+          </Box>
         </Flex>
       </MotionContainer>
 
