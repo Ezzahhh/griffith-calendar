@@ -262,7 +262,11 @@ function MyApp() {
               exit={{ opacity: 0 }}
               transition={{ duration: 1 }}
             >
-              <Flex justifyContent="space-between" gap="10px">
+              <Flex
+                flexDirection={{ base: "column", sm: "column", md: "row" }}
+                justifyContent="space-between"
+                gap={{ base: "0px", sm: "0px", md: "10px" }}
+              >
                 <Select
                   mb={3}
                   flexBasis="20%"
