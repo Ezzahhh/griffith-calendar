@@ -22,6 +22,14 @@ export const StyleWrapper = styled.div`
   .fc-toolbar-title {
     font-size: 1.5em;
   }
+  .fc-list-day-cushion {
+    background-color: ${(props) =>
+      props.colorMode === "dark" ? "var(--chakra-colors-blue-800)" : "#ffffff"};
+  }
+  .fc .fc-list-event:hover td {
+    background-color: ${(props) =>
+      props.colorMode === "dark" ? "#1a202c" : "#ffffff"};
+  }
   @media screen and (max-width: 642px) {
     .fc-toolbar.fc-header-toolbar {
       font-size: 70%;

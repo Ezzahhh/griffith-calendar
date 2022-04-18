@@ -30,6 +30,7 @@ import { ColorModeSwitcher } from "../src/components/ColorModeSwitcher";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import dayGridPlugin from "@fullcalendar/daygrid";
+import listPlugin from "@fullcalendar/list";
 import { useState, useRef, useEffect } from "react";
 import Head from "next/head";
 import { AnimatePresence, motion } from "framer-motion";
@@ -37,6 +38,7 @@ import { StyleWrapper } from "../styles/theme";
 import axios from "axios";
 import { uniqBy } from "lodash";
 import { orderBy } from "natural-orderby";
+import { useMediaQuery } from "react-responsive";
 
 const MotionBox = motion(Box);
 const MotionContainer = motion(Container);
@@ -46,6 +48,7 @@ const regions = require("../src/extras/outlook.json");
 
 function MyApp() {
   console.log("rendering...");
+  const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
   const [region, setRegion] = useState("");
   const selectInputRef = useRef();
   const toast = useToast();
@@ -181,8 +184,12 @@ function MyApp() {
 
   useEffect(() => {
     const api = calendarRef.current.getApi();
-    api.changeView("timeGridWeek"); // the actual view we want
-  }, []);
+    if (isMobile) {
+      api.changeView("listWeek"); // on-load set view to listweek if on mobile
+    } else {
+      api.changeView("timeGridWeek"); // if not on mobile set to timegridweek
+    }
+  }, [isMobile]); // on resize it will switch to listWeek if below 760px
 
   return (
     <>
@@ -352,12 +359,12 @@ function MyApp() {
             >
               <StyleWrapper colorMode={colorMode}>
                 <FullCalendar
-                  plugins={[timeGridPlugin, dayGridPlugin]}
+                  plugins={[timeGridPlugin, dayGridPlugin, listPlugin]}
                   initialView="dayGridMonth" // set undesired initial view and then we use useffect to fix it; firefox issues
                   headerToolbar={{
                     left: "prev,next today",
                     center: "title",
-                    right: "timeGridWeek,timeGridDay,dayGridMonth",
+                    right: "timeGridWeek,timeGridDay,dayGridMonth,listWeek",
                   }}
                   weekends={false}
                   events={calendarState}
