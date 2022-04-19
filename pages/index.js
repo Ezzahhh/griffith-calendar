@@ -197,13 +197,7 @@ function MyApp() {
         <title>Griffith 2nd Year Med Calendar</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <MotionContainer
-        maxW="100%"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 1 }}
-      >
+      <Container maxW="100%">
         <Flex
           flexDirection={{ base: "column", sm: "column", md: "row" }}
           justifyContent={{
@@ -218,46 +212,46 @@ function MyApp() {
         >
           <Box sx={{ visibility: "hidden" }} w="48px" />
           <VStack>
-            <Heading as="h1" size="2xl" textAlign="center">
-              Griffith Med Calendar
-            </Heading>
-            <AnimatePresence exitBeforeEnter>
-              {customFetch.isLoading ? (
-                <MotionBox
-                  w="100%"
-                  key="1"
-                  mb={5}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 1 }}
-                >
-                  <Center>
-                    <MotionSpinner color="red.500" size="lg" mt="8px" />
-                  </Center>
-                </MotionBox>
-              ) : (
-                <AnimatePresence initial={false}>
-                  <MotionBox
-                    key="2"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 1 }}
-                  >
-                    <Heading as="h2" size="xl">
-                      2nd Year
-                    </Heading>
-                  </MotionBox>
-                </AnimatePresence>
-              )}
-            </AnimatePresence>
+            <MotionBox
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1 }}
+            >
+              <Heading as="h1" size="2xl" textAlign="center">
+                Griffith Med Calendar
+              </Heading>
+            </MotionBox>
+            {customFetch.isLoading ? (
+              <MotionBox
+                w="100%"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 1 }}
+              >
+                <Center>
+                  <MotionSpinner color="red.500" size="lg" mt="8px" />
+                </Center>
+              </MotionBox>
+            ) : (
+              <MotionBox
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 1 }}
+              >
+                <Heading as="h2" size="xl">
+                  2nd Year
+                </Heading>
+              </MotionBox>
+            )}
           </VStack>
           <Box mt={{ base: 3, sm: 3, md: 0 }}>
             <ColorModeSwitcher />
           </Box>
         </Flex>
-      </MotionContainer>
+      </Container>
 
       <Container maxW="5xl">
         <Flex
