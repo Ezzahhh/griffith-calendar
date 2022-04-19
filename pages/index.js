@@ -216,36 +216,41 @@ function MyApp() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 1 }}
+              transition={{ duration: 0.5 }}
             >
               <Heading as="h1" size="2xl" textAlign="center">
                 Griffith Med Calendar
               </Heading>
             </MotionBox>
-            {customFetch.isLoading ? (
-              <MotionBox
-                w="100%"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 1 }}
-              >
-                <Center>
-                  <MotionSpinner color="red.500" size="lg" mt="8px" />
-                </Center>
-              </MotionBox>
-            ) : (
-              <MotionBox
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 1 }}
-              >
-                <Heading as="h2" size="xl">
-                  2nd Year
-                </Heading>
-              </MotionBox>
-            )}
+            <AnimatePresence exitBeforeEnter>
+              {customFetch.isLoading && (
+                <MotionBox
+                  w="100%"
+                  key={customFetch.isLoading}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <Center>
+                    <MotionSpinner color="red.500" size="lg" mt="8px" />
+                  </Center>
+                </MotionBox>
+              )}
+              {!customFetch.isLoading && (
+                <MotionBox
+                  key={customFetch.isLoading}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <Heading as="h2" size="xl">
+                    2nd Year
+                  </Heading>
+                </MotionBox>
+              )}
+            </AnimatePresence>
           </VStack>
           <Box mt={{ base: 3, sm: 3, md: 0 }}>
             <ColorModeSwitcher />
@@ -267,7 +272,7 @@ function MyApp() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 1 }}
+              transition={{ duration: 0.5 }}
             >
               <Flex
                 flexDirection={{ base: "column", sm: "column", md: "row" }}
@@ -353,7 +358,12 @@ function MyApp() {
               initial={{ y: "5vh", opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ ease: "easeIn", duration: 0.8 }}
+              transition={{
+                type: "spring",
+                stiffness: 100,
+                ease: "easeIn",
+                duration: 0.7,
+              }}
             >
               <StyleWrapper colorMode={colorMode}>
                 <FullCalendar
