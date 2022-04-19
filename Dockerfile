@@ -1,15 +1,15 @@
-FROM node:lts as dependencies
+FROM node:lts-alpine as dependencies
 WORKDIR /my-project
 COPY package.json package-lock.json ./
 RUN npm ci
 
-FROM node:lts as builder
+FROM node:lts-alpine as builder
 WORKDIR /my-project
 COPY . .
 COPY --from=dependencies /my-project/node_modules ./node_modules
 RUN npm run build
 
-FROM node:lts as runner
+FROM node:lts-alpine as runner
 WORKDIR /my-project
 ENV NODE_ENV production
 # If you are using a custom next.config.js file, uncomment this line.
