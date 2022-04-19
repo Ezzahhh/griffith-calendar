@@ -30,14 +30,22 @@ export const StyleWrapper = styled.div`
     background-color: ${(props) =>
       props.colorMode === "dark" ? "#1a202c" : "#ffffff"};
   }
-  @media screen and (max-width: 642px) {
+  @media screen and (max-width: 655px) {
     .fc-toolbar.fc-header-toolbar {
+      font-size: 70%;
+    }
+  }
+  @media screen and (max-width: 530px) {
+    .fc {
       font-size: 70%;
     }
   }
   @media screen and (max-width: 460px) {
     .fc-toolbar.fc-header-toolbar {
-      font-size: 50%;
+      font-size: 65%;
+    }
+    .fc {
+      font-size: 65%;
     }
   }
 `;
