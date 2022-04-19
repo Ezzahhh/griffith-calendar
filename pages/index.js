@@ -221,10 +221,11 @@ function MyApp() {
             <Heading as="h1" size="2xl" textAlign="center">
               Griffith Med Calendar
             </Heading>
-            <AnimatePresence>
+            <AnimatePresence exitBeforeEnter>
               {customFetch.isLoading ? (
                 <MotionBox
                   w="100%"
+                  key="1"
                   mb={5}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -232,20 +233,23 @@ function MyApp() {
                   transition={{ duration: 1 }}
                 >
                   <Center>
-                    <MotionSpinner
-                      color="red.500"
-                      size="lg"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 1 }}
-                    />
+                    <MotionSpinner color="red.500" size="lg" mt="8px" />
                   </Center>
                 </MotionBox>
               ) : (
-                <Heading as="h2" size="xl">
-                  2nd Year
-                </Heading>
+                <AnimatePresence initial={false}>
+                  <MotionBox
+                    key="2"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 1 }}
+                  >
+                    <Heading as="h2" size="xl">
+                      2nd Year
+                    </Heading>
+                  </MotionBox>
+                </AnimatePresence>
               )}
             </AnimatePresence>
           </VStack>
