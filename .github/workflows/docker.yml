@@ -3,6 +3,17 @@ name: Docker Build & Push
 on:
   push:
     branches: [ main ]
+    paths: 
+      - "src/**"
+      - "pages/**"
+      - "public/**"
+      - "styles/**"
+      - "Dockerfile"
+      - "docker-compose.yaml"
+      - "next.config.js"
+      - "package.json"
+      - "package-lock.json"
+      - "!README.md"
 
 jobs:
   docker:
