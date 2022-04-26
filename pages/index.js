@@ -321,6 +321,8 @@ function MyApp() {
                   onChange={icsURL}
                   value={urlState}
                   isDisabled={selectValues !== null ? false : true}
+                  pr="70px"
+                  onFocus={(event) => event.target.select()}
                 />
                 <InputRightElement width="4.5rem">
                   <Button
