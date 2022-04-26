@@ -158,12 +158,15 @@ function MyApp() {
 
   const customEvents = async (region) => {
     const api = calendarRef.current.getApi();
-    api.removeAllEvents();
-    setSelectValues(null);
-    setURLState("");
     if (region === "") {
+      selectInputRef.current.clearValue(); // clear the multiselect
+      api.removeAllEvents();
       return;
     }
+    setSelectValues(null);
+    setURLState("");
+
+    api.removeAllEvents();
     setCustomFetch({ isLoading: true });
     setRegion(region);
     const response = await axios.get(`/api/objectFilter?region=${region}`);
