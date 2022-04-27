@@ -161,6 +161,8 @@ function MyApp() {
     if (region === "") {
       selectInputRef.current.clearValue(); // clear the multiselect
       api.removeAllEvents();
+      setSelectValues(null);
+      setURLState("");
       return;
     }
     setSelectValues(null);
