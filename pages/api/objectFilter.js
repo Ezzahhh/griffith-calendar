@@ -1,3 +1,4 @@
+import { space } from "@chakra-ui/react";
 import axios from "axios";
 import { range } from "lodash";
 
@@ -42,6 +43,7 @@ async function objectFilter(fullSet, req) {
     /Group GCUH [\w]/m, // Group GCUH A
     /^Group [\D]$/m, // Group A (GCUH)
     /^Block \d$/gm, // Block 1
+    /SCUH Pathway[s]? \d+(?:, \d+)+/gm, // SCUH Pathways 1, 2, 3
   ];
 
   fullSet.map((eventObj) => {
@@ -248,6 +250,18 @@ async function objectFilter(fullSet, req) {
             if (req.query.region === "Sunshine Coast") {
               const spaceSplit = found[0].split(" ");
               add(returnObj, "GPLP Block " + spaceSplit[1], eventObj);
+              boolAddAll = true;
+            }
+          }
+          if (found !== null && reg === listOfRegex[17]) {
+            // SCUH Pathways 1, 2, 3 ["SCUH", "Pathways", "1,", "2,", "3"]
+            if (req.query.region === "Sunshine Coast") {
+              const spaceSplit = found[0].split(" ");
+              spaceSplit.splice(0, 2);
+              spaceSplit.map((x) => {
+                x = x.replace(/\D/g, "");
+                add(returnObj, "Pathway " + x, eventObj);
+              });
               boolAddAll = true;
             }
           }
