@@ -43,6 +43,7 @@ async function objectFilter(fullSet, req) {
     /^Block \d$/gm, // Block 1
     /SCUH Pathway[s]? \d+(?:, \d+)+/gm, // SCUH Pathways 1, 2, 3
     /^Pathway[s]? \d+(?:, \d+)+ & \d+$/gm, // Pathways 1, 2, 4 & 12
+    /^Pathway[s]? \d+ to \d+$/gm, // Pathway 1 to 6
   ];
 
   fullSet.map((eventObj) => {
@@ -260,6 +261,17 @@ async function objectFilter(fullSet, req) {
               });
               boolAddAll = true;
             }
+          }
+          if (found !== null && reg === listOfRegex[17]) {
+            // Pathway 1 to 6 ["Pathway", "1", "to", "6"]
+            const spaceSplit = found[0].split(" ");
+            spaceSplit.shift();
+            spaceSplit.splice(spaceSplit.indexOf("to"), 1);
+            const res = range(spaceSplit[0], parseInt(spaceSplit[1]) + 1);
+            res.map((x) => {
+              add(returnObj, "Pathway " + x, eventObj);
+            });
+            boolAddAll = true;
           }
         });
       });
