@@ -252,15 +252,13 @@ async function objectFilter(fullSet, req) {
           }
           if (found !== null && reg === listOfRegex[16]) {
             // Pathways 1, 2, 4 & 12 ["Pathways", "1,", "2,", "4,", "&", "12"]
-            if (req.query.region === "Sunshine Coast") {
-              const spaceSplit = found[0].split(" ");
-              spaceSplit.splice(0, 1);
-              spaceSplit.map((x) => {
-                x = x.replace(/\D/g, "");
-                if (x !== "") add(returnObj, "Pathway " + x, eventObj);
-              });
-              boolAddAll = true;
-            }
+            const spaceSplit = found[0].split(" ");
+            spaceSplit.splice(0, 1);
+            spaceSplit.map((x) => {
+              x = x.replace(/\D/g, "");
+              if (x !== "") add(returnObj, "Pathway " + x, eventObj);
+            });
+            boolAddAll = true;
           }
           if (found !== null && reg === listOfRegex[17]) {
             // Pathway 1 to 6 ["Pathway", "1", "to", "6"]
