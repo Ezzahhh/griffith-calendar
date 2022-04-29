@@ -42,7 +42,7 @@ async function objectFilter(fullSet, req) {
     /^Group [\D]$/m, // Group A (GCUH)
     /^Block \d$/gm, // Block 1
     /SCUH Pathway[s]? \d+(?:, \d+)+/gm, // SCUH Pathways 1, 2, 3
-    /^Pathway[s]? \d+(?:, \d+)+ & \d+$/gm, // Pathways 1, 2, 4 & 12
+    /^Pathway[s]? \d+(?:, \d+)+ & \d+/gm, // Pathways 1, 2, 4 & 12
     /^Pathway[s]? \d+ to \d+$/gm, // Pathway 1 to 6
   ];
 
