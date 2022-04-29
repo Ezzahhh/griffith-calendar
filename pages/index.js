@@ -39,6 +39,7 @@ import axios from "axios";
 import { uniqBy } from "lodash";
 import { orderBy } from "natural-orderby";
 import { useMediaQuery } from "react-responsive";
+import Script from "next/script";
 
 const MotionBox = motion(Box);
 const MotionContainer = motion(Container);
@@ -203,6 +204,18 @@ function MyApp() {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Container maxW="100%">
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-VL8WTECN27"
+          strategy="afterInteractive"
+        ></Script>
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-VL8WTECN27');`}
+        </Script>
         <Flex
           flexDirection={{ base: "column", sm: "column", md: "row" }}
           justifyContent={{
