@@ -32,20 +32,41 @@ export const StyleWrapper = styled.div`
   }
   @media screen and (max-width: 655px) {
     .fc-toolbar.fc-header-toolbar {
-      font-size: 70%;
+      font-size: 90%;
     }
   }
-  @media screen and (max-width: 530px) {
+  @media screen and (max-width: 620px) {
     .fc {
-      font-size: 70%;
+      font-size: 80%;
     }
   }
-  @media screen and (max-width: 460px) {
+  @media screen and (max-width: 520px) {
+    .fc {
+      font-size: 75%;
+    }
+  }
+  @media screen and (max-width: 500px) {
     .fc-toolbar.fc-header-toolbar {
-      font-size: 65%;
+      font-size: 70%;
     }
     .fc {
-      font-size: 65%;
+      font-size: 70%;
+    }
+  }
+  @media screen and (max-width: 440px) {
+    .fc-toolbar.fc-header-toolbar {
+      font-size: 60%;
+    }
+    .fc {
+      font-size: 60%;
+    }
+  }
+  @media screen and (max-width: 395px) {
+    .fc-toolbar.fc-header-toolbar {
+      font-size: 53%;
+    }
+    .fc {
+      font-size: 53%;
     }
   }
 `;

@@ -361,7 +361,7 @@ function MyApp() {
               borderRadius="xl"
               boxShadow="2xl"
               borderWidth={2}
-              p={6}
+              p={{ base: 1, sm: 5, md: 6 }}
               initial={{ y: "5vh", opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ opacity: 0 }}
