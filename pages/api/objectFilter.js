@@ -31,12 +31,10 @@ async function objectFilter(fullSet, req) {
     /(?:P|p)athway[s]?\s\d+(?:,\d+)+&\d+$/gm, // pathways 1,2,3&4
     /(?:P|p)athway[s]?\s\d+(?:,\d+)+$/gm, // Pathways 7,8,9,10,11,12
     /(?:P|p)athway[s]?\s\d+(\d+)*-\d+/gm, // Pathways 5-8
-    /(?:P|p)athway[s]?\s(\d+)(\s)*&(\s)*(\d+)*$/gm, // Pathways 11 & 12
-    /(?:G|g)roup[s]?\s\d+(\d+)*-\d+/gm, // Groups 1-6
-    /(?:P|p)athway[s]?\s\d&\d/gm, // Pathway 7&8
+    /(?:P|p)athway[s]?\s(\d+)(\s)&(\s)(\d+)/gm, // Pathways 11 & 12
+    /(?:P|p)athway[s]?\s(\d+)&(\d+)/gm, // Pathway 7&8
     /(?:G|g)roup[s]?\sTweed (\w)/gm, // Groups Tweed D
     /(?:L|l)ogan Group[s]? \w$/gm, // Logan Groups A
-    /(?:G|g)roup[s]?\sTBA/gm, // Groups TBA
     /(?:G|g)roup[s]?\sTweed \w(,\w+).*$/gm, // Groups Tweed A,B,C
     /Tweed\s(?:G|g)roup[s]?\s(\w)$/gm, // Tweed Group C
     /Logan [\w](,[\w]).*/m, //Logan A,B,C,D
@@ -44,6 +42,8 @@ async function objectFilter(fullSet, req) {
     /^Group [\D]$/m, // Group A (GCUH)
     /^Block \d$/gm, // Block 1
     /SCUH Pathway[s]? \d+(?:, \d+)+/gm, // SCUH Pathways 1, 2, 3
+    /^Pathway[s]? \d+(?:, \d+)+ & \d+/gm, // Pathways 1, 2, 4 & 12
+    /^Pathway[s]? \d+ to \d+$/gm, // Pathway 1 to 6
   ];
 
   fullSet.map((eventObj) => {
@@ -147,16 +147,7 @@ async function objectFilter(fullSet, req) {
             });
             boolAddAll = true;
           }
-          // if (found !== null && reg === listOfRegex[6]) {
-          //   // ["Groups", "1-6"]
-          //   const spaceSplit = found[0].split(" ")[1].split("-");
-          //   const res = range(spaceSplit[0], parseInt(spaceSplit[1]) + 1);
-          //   res.map((group) => {
-          //     add(returnObj, "Group " + group, eventObj);
-          //   });
-          //   boolAddAll = true;
-          // }
-          if (found !== null && reg === listOfRegex[7]) {
+          if (found !== null && reg === listOfRegex[6]) {
             // ["Pathways", "11&12"]
             const spaceSplit = found[0].split(" ")[1].split("&");
             spaceSplit.map((pathway) => {
@@ -164,7 +155,7 @@ async function objectFilter(fullSet, req) {
             });
             boolAddAll = true;
           }
-          if (found !== null && reg === listOfRegex[8]) {
+          if (found !== null && reg === listOfRegex[7]) {
             // ["Groups", "Tweed", "D"]
             const spaceSplit = found[0].split(" ");
             spaceSplit.shift();
@@ -175,7 +166,7 @@ async function objectFilter(fullSet, req) {
             );
             boolAddAll = true;
           }
-          if (found !== null && reg === listOfRegex[9]) {
+          if (found !== null && reg === listOfRegex[8]) {
             // ["Logan", "Groups", "A"]
             const spaceSplit = found[0].split(" ");
             spaceSplit.splice(spaceSplit.indexOf("Group"), 1);
@@ -186,13 +177,7 @@ async function objectFilter(fullSet, req) {
             );
             boolAddAll = true;
           }
-          // if (found !== null && reg === listOfRegex[10]) {
-          //   // ["Groups", "TBA"]
-          //   const spaceSplit = found[0].split(" ")[1];
-          //   returnObj["Group TBA"] = eventObj;
-          //   boolAddAll = true;
-          // }
-          if (found !== null && reg === listOfRegex[11]) {
+          if (found !== null && reg === listOfRegex[9]) {
             // ["Groups", "Tweed", "A,B,C"]
             const spaceSplit = found[0].split(" ");
             spaceSplit.shift();
@@ -203,7 +188,7 @@ async function objectFilter(fullSet, req) {
             });
             boolAddAll = true;
           }
-          if (found !== null && reg === listOfRegex[12]) {
+          if (found !== null && reg === listOfRegex[10]) {
             // ["Tweed", "Group", "C"]
             const spaceSplit = found[0].split(" ");
             spaceSplit.splice(spaceSplit.indexOf("Group"), 1);
@@ -214,7 +199,7 @@ async function objectFilter(fullSet, req) {
             );
             boolAddAll = true;
           }
-          if (found !== null && reg === listOfRegex[13]) {
+          if (found !== null && reg === listOfRegex[11]) {
             // Logan A,B,C,D ["Logan", "A,B,C,D"]
             const spaceSplit = found[0].split(" ");
             const split1 = spaceSplit[1].split(",");
@@ -223,7 +208,7 @@ async function objectFilter(fullSet, req) {
             });
             boolAddAll = true;
           }
-          if (found !== null && reg === listOfRegex[14]) {
+          if (found !== null && reg === listOfRegex[12]) {
             // Group GCUH A ["Group", "GCUH", "A"]
             const spaceSplit = found[0].split(" ");
             add(
@@ -234,7 +219,7 @@ async function objectFilter(fullSet, req) {
 
             boolAddAll = true;
           }
-          if (found !== null && reg === listOfRegex[15]) {
+          if (found !== null && reg === listOfRegex[13]) {
             // Group A ["Group", "A"]
             const spaceSplit = found[0].split(" ");
             add(
@@ -245,7 +230,7 @@ async function objectFilter(fullSet, req) {
 
             boolAddAll = true;
           }
-          if (found !== null && reg === listOfRegex[16]) {
+          if (found !== null && reg === listOfRegex[14]) {
             // Block 1 ["Block", "1"]
             if (req.query.region === "Sunshine Coast") {
               const spaceSplit = found[0].split(" ");
@@ -253,7 +238,7 @@ async function objectFilter(fullSet, req) {
               boolAddAll = true;
             }
           }
-          if (found !== null && reg === listOfRegex[17]) {
+          if (found !== null && reg === listOfRegex[15]) {
             // SCUH Pathways 1, 2, 3 ["SCUH", "Pathways", "1,", "2,", "3"]
             if (req.query.region === "Sunshine Coast") {
               const spaceSplit = found[0].split(" ");
@@ -265,6 +250,27 @@ async function objectFilter(fullSet, req) {
               boolAddAll = true;
             }
           }
+          if (found !== null && reg === listOfRegex[16]) {
+            // Pathways 1, 2, 4 & 12 ["Pathways", "1,", "2,", "4,", "&", "12"]
+            const spaceSplit = found[0].split(" ");
+            spaceSplit.splice(0, 1);
+            spaceSplit.map((x) => {
+              x = x.replace(/\D/g, "");
+              if (x !== "") add(returnObj, "Pathway " + x, eventObj);
+            });
+            boolAddAll = true;
+          }
+          if (found !== null && reg === listOfRegex[17]) {
+            // Pathway 1 to 6 ["Pathway", "1", "to", "6"]
+            const spaceSplit = found[0].split(" ");
+            spaceSplit.shift();
+            spaceSplit.splice(spaceSplit.indexOf("to"), 1);
+            const res = range(spaceSplit[0], parseInt(spaceSplit[1]) + 1);
+            res.map((x) => {
+              add(returnObj, "Pathway " + x, eventObj);
+            });
+            boolAddAll = true;
+          }
         });
       });
       if (boolAddAll === false) {
@@ -273,7 +279,6 @@ async function objectFilter(fullSet, req) {
     }
   });
   const newSet = [...new Set(forAll)];
-  // console.log(newSet);
   returnObj["Rest"] = newSet;
   return returnObj;
 }
