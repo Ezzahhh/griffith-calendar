@@ -1,4 +1,3 @@
-// e.g. src/Chakra.js
 // a) import `ChakraProvider` component as well as the storageManagers
 import {
   ChakraProvider,
