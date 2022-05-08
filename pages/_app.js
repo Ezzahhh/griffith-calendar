@@ -2,8 +2,7 @@ import "@fullcalendar/common/main.css";
 import "@fullcalendar/daygrid/main.css";
 import "@fullcalendar/timegrid/main.css";
 import "@fullcalendar/list/main.css";
-import { ChakraProvider } from "@chakra-ui/react";
-import theme from "../styles/theme";
+import { Chakra } from "../src/components/Chakra";
 import Script from "next/script";
 
 function MyApp({ Component, pageProps }) {
@@ -24,11 +23,14 @@ function MyApp({ Component, pageProps }) {
                     });
                 `}
       </Script>
-      <ChakraProvider theme={theme}>
+      <Chakra cookies={pageProps.cookies}>
         <Component {...pageProps} />
-      </ChakraProvider>
+      </Chakra>
     </>
   );
 }
+
+// re-export the reusable `getServerSideProps` function
+export { getServerSideProps } from "../src/components/Chakra";
 
 export default MyApp;
