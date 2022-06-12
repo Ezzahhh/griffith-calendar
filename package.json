@@ -11,8 +11,8 @@
   "dependencies": {
     "@babel/preset-react": "7.17.12",
     "@chakra-ui/react": "1.8.8",
-    "@emotion/react": "11.9.0",
-    "@emotion/styled": "11.8.1",
+    "@emotion/react": "11.9.3",
+    "@emotion/styled": "11.9.3",
     "@fullcalendar/daygrid": "5.11.0",
     "@fullcalendar/interaction": "5.11.0",
     "@fullcalendar/list": "5.11.0",
