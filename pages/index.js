@@ -31,7 +31,7 @@ import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import listPlugin from "@fullcalendar/list";
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Head from "next/head";
 import { AnimatePresence, motion } from "framer-motion";
 import { StyleWrapper } from "../styles/theme";
@@ -41,7 +41,6 @@ import { orderBy } from "natural-orderby";
 import { useMediaQuery } from "react-responsive";
 
 const MotionBox = motion(Box);
-const MotionContainer = motion(Container);
 const MotionSpinner = motion(Spinner);
 
 const regions = require("../src/extras/outlook.json");
@@ -305,9 +304,9 @@ function MyApp() {
                     closeMenuOnSelect={false}
                     selectedOptionStyle="check"
                     hideSelectedOptions={false}
-                    menuPortalTarget={
-                      typeof window !== "undefined" ? document.body : null
-                    }
+                    // menuPortalTarget={
+                    //   typeof window !== "undefined" ? document.body : null
+                    // }
                     styles={{
                       menuPortal: (base) => ({ ...base, zIndex: 9999 }),
                     }}
@@ -328,9 +327,9 @@ function MyApp() {
                 />
                 <InputRightElement width="4.5rem">
                   <Button
-                    menuPortalTarget={
-                      typeof window !== "undefined" ? document.body : null
-                    }
+                    // menuPortalTarget={
+                    //   typeof window !== "undefined" ? document.body : null
+                    // }
                     styles={{
                       menuPortal: (base) => ({ ...base, zIndex: 9998 }),
                     }}
@@ -424,22 +423,20 @@ function MyApp() {
               <ModalHeader>Event Details</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
-                {Object.entries(myEvent.current).map(([key, value]) => {
-                  return (
-                    <>
-                      <HStack>
-                        <Text
-                          as="b"
-                          minW="70px"
-                          sx={{ "text-transform": "capitalize" }}
-                        >
-                          {key}
-                        </Text>
-                        <Text>{value.toString().replace(/_/g, " ")}</Text>
-                      </HStack>
-                    </>
-                  );
-                })}
+                {Object.entries(myEvent.current).map(([key, value], index) => (
+                  <React.Fragment key={index}>
+                    <HStack>
+                      <Text
+                        as="b"
+                        minW="70px"
+                        sx={{ "text-transform": "capitalize" }}
+                      >
+                        {key}
+                      </Text>
+                      <Text>{value.toString().replace(/_/g, " ")}</Text>
+                    </HStack>
+                  </React.Fragment>
+                ))}
               </ModalBody>
               <ModalFooter>
                 <Button colorScheme="blue" mr={3} onClick={onClose}>
