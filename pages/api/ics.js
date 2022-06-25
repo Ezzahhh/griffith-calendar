@@ -16,7 +16,9 @@ export default async function handler(req, res) {
   decodeSpec.push("Rest");
 
   const getCal = await axios.get(
-    `http://localhost:3000/api/objectFilter?region=${decodeRegion}`
+    process.env.NODE_ENV === "production"
+      ? `${process.env.NEXT_PUBLIC_URL}/api/objectFilter?region=${decodeRegion}`
+      : `http://localhost:3000/api/objectFilter?region=${decodeRegion}`
   ); // eventually we will call getICS with filters passed in req.query params
   const calendar = icalgen();
   const myEvents = [];

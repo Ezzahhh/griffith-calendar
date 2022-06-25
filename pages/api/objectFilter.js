@@ -1,10 +1,11 @@
-import { space } from "@chakra-ui/react";
 import axios from "axios";
 import { range } from "lodash";
 
 export default async function handler(req, res) {
   const fullSet = await axios.get(
-    `http://localhost:3000/api/getCal?region=${req.query.region}`
+    process.env.NODE_ENV === "production"
+      ? `${process.env.NEXT_PUBLIC_URL}/api/getCal?region=${req.query.region}`
+      : `http://localhost:3000/api/getCal?region=${req.query.region}`
   );
   const filtered = await objectFilter(fullSet.data, req);
   res.status(200).json(filtered);

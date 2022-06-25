@@ -2,7 +2,11 @@ import axios from "axios";
 import { merge } from "lodash";
 
 export default async function handler(req, res) {
-  const fullSet = await axios.get("http://localhost:3000/api/getCal");
+  const fullSet = await axios.get(
+    process.env.NODE_ENV === "production"
+      ? `${process.env.NEXT_PUBLIC_URL}/api/getCal`
+      : "http://localhost:3000/api/getCal"
+  );
   const uniqueTitles = new Set();
   fullSet.data.forEach((element) => {
     uniqueTitles.add(element.title);
