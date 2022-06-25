@@ -5,6 +5,7 @@ import "@fullcalendar/list/main.css";
 import { Chakra } from "../src/components/Chakra";
 import Script from "next/script";
 import Layout from "../src/components/Layout";
+import "../styles/styles.css";
 
 function MyApp({ Component, pageProps }) {
   return (

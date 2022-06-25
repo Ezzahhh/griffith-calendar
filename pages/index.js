@@ -47,7 +47,6 @@ const MotionSpinner = motion(Spinner);
 const regions = require("../src/extras/outlook.json");
 
 function MyApp() {
-  console.log("rendering...");
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
   const [region, setRegion] = useState("");
   const selectInputRef = useRef();
@@ -72,7 +71,6 @@ function MyApp() {
   const [fullCalData, setFullCalData] = useState();
 
   const handleChange = (e) => {
-    console.log(e);
     const selectionList = [];
     const toAdd = [];
     calendarState.map((x) => {
@@ -81,7 +79,6 @@ function MyApp() {
     e.map((x) => {
       const keyValue = x.value;
       selectionList.push(keyValue);
-      console.log(fullCalData[keyValue]);
       if (Array.isArray(fullCalData[keyValue])) {
         fullCalData[keyValue].map((x) => {
           toAdd.push(x);
