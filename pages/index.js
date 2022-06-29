@@ -42,6 +42,7 @@ import { useMediaQuery } from "react-responsive";
 
 const MotionBox = motion(Box);
 const MotionSpinner = motion(Spinner);
+const MotionContainer = motion(Container);
 
 const regions = require("../src/extras/outlook.json");
 
@@ -198,7 +199,13 @@ function MyApp() {
         <title>Griffith 2nd Year Med Calendar</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <Container maxW="100%">
+      <MotionContainer
+        maxW="100%"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         <Flex
           flexDirection={{ base: "column", sm: "column", md: "row" }}
           justifyContent={{
@@ -213,16 +220,11 @@ function MyApp() {
         >
           <Box sx={{ visibility: "hidden" }} w="48px" />
           <VStack>
-            <MotionBox
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
-            >
+            <Box>
               <Heading as="h1" size="2xl" textAlign="center">
                 Griffith Med Calendar
               </Heading>
-            </MotionBox>
+            </Box>
             <AnimatePresence exitBeforeEnter>
               {customFetch.isLoading && (
                 <MotionBox
@@ -257,9 +259,15 @@ function MyApp() {
             <ColorModeSwitcher />
           </Box>
         </Flex>
-      </Container>
+      </MotionContainer>
 
-      <Container maxW="5xl">
+      <MotionContainer
+        maxW="5xl"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         <Flex
           flexDirection="column"
           justifyContent="center"
@@ -267,14 +275,7 @@ function MyApp() {
           alignContent="center"
         >
           <>
-            <MotionBox
-              w="100%"
-              mb={5}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
-            >
+            <Box w="100%" mb={5}>
               <Flex
                 flexDirection={{ base: "column", sm: "column", md: "row" }}
                 justifyContent="space-between"
@@ -351,7 +352,7 @@ function MyApp() {
                   </Button>
                 </InputRightElement>
               </InputGroup>
-            </MotionBox>
+            </Box>
             <MotionBox
               w="100%"
               borderRadius="xl"
@@ -446,7 +447,7 @@ function MyApp() {
             </ModalContent>
           </Modal>
         </Flex>
-      </Container>
+      </MotionContainer>
     </>
   );
 }
