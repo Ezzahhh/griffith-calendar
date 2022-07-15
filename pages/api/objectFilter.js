@@ -31,7 +31,7 @@ async function objectFilter(fullSet, req) {
     /(?:P|p)athway[s]?\s\d+(,\d+).* & \d+$/gm, // P|pathways 1,2,11 & 12
     /(?:P|p)athway[s]?\s\d+(?:,\d+)+&\d+$/gm, // pathways 1,2,3&4
     /(?:P|p)athway[s]?\s\d+(?:,\d+)+$/gm, // Pathways 7,8,9,10,11,12
-    /(?:P|p)athway[s]?\s\d+(\d+)*-\d+/gm, // Pathways 5-8
+    /(?:P|p)athway[s]?\s\d+-\d+/gm, // Pathways 5-8
     /(?:P|p)athway[s]?\s(\d+)(\s)&(\s)(\d+)/gm, // Pathways 11 & 12
     /(?:P|p)athway[s]?\s(\d+)&(\d+)/gm, // Pathway 7&8
     /(?:G|g)roup[s]?\sTweed (\w)/gm, // Groups Tweed D
