@@ -1,9 +1,9 @@
 import icalgen from "ical-generator";
 import axios from "axios";
-import { Blob } from "blob-polyfill";
+// import { Blob } from "blob-polyfill";
 import { uniqBy } from "lodash";
 
-global["Blob"] = Blob;
+// global["Blob"] = Blob;
 
 export default async function handler(req, res) {
   const decodeRegion =

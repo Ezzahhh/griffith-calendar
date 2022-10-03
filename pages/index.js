@@ -1,3 +1,4 @@
+import React, { useState, useRef, useEffect } from "react";
 import {
   Container,
   Heading,
@@ -26,13 +27,12 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { Select as MultiSelect } from "chakra-react-select";
+import Head from "next/head";
 import { ColorModeSwitcher } from "../src/components/ColorModeSwitcher";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import listPlugin from "@fullcalendar/list";
-import React, { useState, useRef, useEffect } from "react";
-import Head from "next/head";
 import { AnimatePresence, motion } from "framer-motion";
 import { StyleWrapper } from "../styles/theme";
 import axios from "axios";
@@ -67,16 +67,16 @@ function MyApp() {
     end: "",
     allDay: false,
   });
-  const [calendarState, setCalendarState] = useState();
+  const [calendarState, setCalendarState] = useState([]);
   const [fullCalData, setFullCalData] = useState();
 
   const handleChange = (e) => {
     const selectionList = [];
     const toAdd = [];
-    calendarState.map((x) => {
+    calendarState.forEach((x) => {
       toAdd.push(x);
     });
-    e.map((x) => {
+    e.forEach((x) => {
       const keyValue = x.value;
       selectionList.push(keyValue);
       if (Array.isArray(fullCalData[keyValue])) {
@@ -164,6 +164,7 @@ function MyApp() {
     }
     setSelectValues(null);
     setURLState("");
+    setCalendarState([]);
 
     api.removeAllEvents();
     setCustomFetch({ isLoading: true });
@@ -173,13 +174,12 @@ function MyApp() {
     setFullCalData(response.data);
     setCalendarState(response.data["Rest"]);
     const selectList = [];
-    Object.keys(response.data).map((k) => {
+    Object.keys(response.data).forEach((k) => {
       if (k !== "Rest") {
         selectList.push({ label: k, value: k });
       }
     });
     const res = orderBy(selectList, "label", "asc");
-    // const res = orderBy(selectList);
     setSelectValues(res);
     selectInputRef.current.clearValue(); // clear the multiselect
   };
