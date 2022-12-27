@@ -20,7 +20,7 @@
     "@fullcalendar/timegrid": "5.11.2",
     "chakra-react-select": "4.4.0",
     "framer-motion": "^7.0.0",
-    "ical-generator": "3.6.0",
+    "ical-generator": "3.6.1",
     "lodash": "4.17.21",
     "natural-orderby": "3.0.1",
     "next": "13.1.1",
