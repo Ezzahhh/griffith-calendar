@@ -18,7 +18,7 @@
     "@fullcalendar/list": "5.11.4",
     "@fullcalendar/react": "5.11.4",
     "@fullcalendar/timegrid": "5.11.4",
-    "chakra-react-select": "4.4.3",
+    "chakra-react-select": "4.10.1",
     "framer-motion": "^7.0.0",
     "ical-generator": "3.6.1",
     "lodash": "4.17.21",
